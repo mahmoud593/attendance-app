@@ -2,6 +2,7 @@ import 'package:attendience_app/core/helper/app_size_config.dart';
 import 'package:attendience_app/features/applogize/presentation/controller/applogize_cubit.dart';
 import 'package:attendience_app/features/applogize/presentation/controller/applogize_states.dart';
 import 'package:attendience_app/features/applogize/presentation/view/widgets/add_applogize_view_body.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,12 +31,20 @@ class AddApplogizeScreen extends StatelessWidget {
             return ModalProgressHUD(
               inAsyncCall: state is ApplogizeLoadingState || state is UploadImageLoadingState,
               progressIndicator: const CupertinoActivityIndicator(),
-              child: Padding(
-                padding:  EdgeInsets.symmetric(
-                  horizontal: SizeConfig.height * 0.02,
-                  vertical: SizeConfig.height * 0.02,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(AssetsManager.backgroundImage),
+                  ),
                 ),
-                child: AddApplogizeViewBody(),
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(
+                    horizontal: SizeConfig.height * 0.02,
+                    vertical: SizeConfig.height * 0.02,
+                  ),
+                  child: AddApplogizeViewBody(),
+                ),
               ),
             );
           },

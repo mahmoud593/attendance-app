@@ -7,6 +7,7 @@ import 'package:attendience_app/features/home/presentation/view/widgets/face_reg
 import 'package:attendience_app/features/home/presentation/view/widgets/fingure_print_widget.dart';
 import 'package:attendience_app/features/home/presentation/view/widgets/micro_record_widget.dart';
 import 'package:attendience_app/features/home/presentation/view/widgets/record_view.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/size_config/app_size_config.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
@@ -193,6 +194,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Container(
                           width: SizeConfig.width,
                           decoration: BoxDecoration(
+                            image: const DecorationImage(
+                              fit: BoxFit.fitHeight,
+                              image: AssetImage(AssetsManager.backgroundImage),
+                            ),
                             color: ColorManager.white,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(SizeConfig.height * .07),

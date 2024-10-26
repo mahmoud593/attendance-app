@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,12 @@ class _RecordViewState extends State<RecordView> {
         listener: (context, state) {},
         builder: (context, state) {
           return Container(
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: AssetImage(AssetsManager.backgroundImage),
+              ),
+            ),
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [

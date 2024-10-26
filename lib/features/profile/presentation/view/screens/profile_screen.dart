@@ -1,4 +1,5 @@
 import 'package:attendience_app/features/profile/presentation/view/widgets/profile_screen_body.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,17 @@ class ProfileScreen extends StatelessWidget {
           title: Text("بيانات الحساب",style: TextStyles.textStyle18Bold,),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.03),
-          child: const ProfileScreenBody(),
+        body: Container(
+          decoration: BoxDecoration(
+            image: const DecorationImage(
+              fit: BoxFit.fitHeight,
+              image: AssetImage(AssetsManager.backgroundImage),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.03),
+            child: const ProfileScreenBody(),
+          ),
         ),
       ),
     );

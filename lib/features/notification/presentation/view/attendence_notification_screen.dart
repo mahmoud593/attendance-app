@@ -1,6 +1,7 @@
 import 'package:attendience_app/core/helper/app_size_config.dart';
 import 'package:attendience_app/features/notification/controller/notification_cubit.dart';
 import 'package:attendience_app/features/notification/controller/notification_states.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,11 +56,18 @@ class _AttendenceNotificationScreenState extends State<AttendenceNotificationScr
             listener: (context, state) {},
             builder: (context, state) {
               var cubit=NotificationCubit.get(context);
-              return SingleChildScrollView(
-                child: state is GetAttendenceNotificationLoadingState ?
-                const Center(child: CupertinoActivityIndicator(),):
-                Container(
-                  child: Column(
+              return Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(AssetsManager.backgroundImage),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: state is GetAttendenceNotificationLoadingState ?
+                  const Center(child: CupertinoActivityIndicator(),):
+                  Column(
                     children: [
 
                       GestureDetector(

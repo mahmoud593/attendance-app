@@ -1,5 +1,6 @@
 import 'package:attendience_app/features/notification/controller/notification_cubit.dart';
 import 'package:attendience_app/features/notification/controller/notification_states.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,8 +38,15 @@ class _GeneralNotificationScreenState extends State<GeneralNotificationScreen> {
         body:BlocConsumer<NotificationCubit,NotificationStates>(
             builder: (context, state) {
               var cubit=NotificationCubit.get(context);
-              return SingleChildScrollView(
-                child: Container(
+              return Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(AssetsManager.backgroundImage),
+                  ),
+                ),
+                child: SingleChildScrollView(
                   child: state is GetGeneralNotificationLoadingState?
                     const Center(child: CupertinoActivityIndicator(),)
                     :Column(
@@ -95,7 +103,7 @@ class _GeneralNotificationScreenState extends State<GeneralNotificationScreen> {
                       ),
 
                     ],
-                  ),
+                                    ),
                 ),
               );
             },

@@ -3,6 +3,7 @@ import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/applogize/presentation/controller/applogize_cubit.dart';
 import 'package:attendience_app/features/applogize/presentation/controller/applogize_states.dart';
 import 'package:attendience_app/features/applogize/presentation/view/widgets/applogizes_view_body.dart';
+import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,12 +47,21 @@ class _ApplogizesScreenState extends State<ApplogizesScreen> {
                 title: Text("طلبات الاستاذانات",style: TextStyles.textStyle18Bold,),
                 centerTitle: true,
               ),
-              body:  Padding(
-                padding:  EdgeInsets.symmetric(
-                  horizontal: SizeConfig.height * 0.02,
-                  vertical: SizeConfig.height * 0.02,
+              body:  Container(
+                height: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(AssetsManager.backgroundImage),
+                  ),
                 ),
-                child: ApplogizesViewBody(),
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(
+                    horizontal: SizeConfig.height * 0.02,
+                    vertical: SizeConfig.height * 0.02,
+                  ),
+                  child: ApplogizesViewBody(),
+                ),
               ),
             ),
           ),
