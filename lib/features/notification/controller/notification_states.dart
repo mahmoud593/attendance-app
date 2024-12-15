@@ -12,3 +12,7 @@ class GetAttendenceNotificationLoadingState extends NotificationStates {}
 class GetGeneralNotificationSuccessState extends NotificationStates {}
 class GetGeneralNotificationErrorState extends NotificationStates {}
 class GetGeneralNotificationLoadingState extends NotificationStates {}
+
+class AddReplySuccessState extends NotificationStates {}
+class AddReplyErrorState extends NotificationStates {}
+class AddReplyLoadingState extends NotificationStates {}

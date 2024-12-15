@@ -21,8 +21,8 @@ class ProfileScreen extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          decoration: BoxDecoration(
-            image: const DecorationImage(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
               fit: BoxFit.fitHeight,
               image: AssetImage(AssetsManager.backgroundImage),
             ),

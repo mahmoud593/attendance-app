@@ -1,4 +1,5 @@
 import 'package:attendience_app/core/helper/material_navigation.dart';
+import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/applogize/presentation/view/add_applogize_screen.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
@@ -7,6 +8,8 @@ import 'package:attendience_app/features/home/presentation/view/widgets/face_reg
 import 'package:attendience_app/features/home/presentation/view/widgets/fingure_print_widget.dart';
 import 'package:attendience_app/features/home/presentation/view/widgets/micro_record_widget.dart';
 import 'package:attendience_app/features/home/presentation/view/widgets/record_view.dart';
+import 'package:attendience_app/features/home/presentation/view/widgets/scan_qr_code_widget.dart';
+import 'package:attendience_app/features/scan_qr_code/presentation/view/scan_qr_code_body.dart';
 import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/size_config/app_size_config.dart';
@@ -163,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print('Distance: $distanceInMeters meters');
 
     // Return true if the distance is within 100 meters
-    return distanceInMeters <= 100;
+    return distanceInMeters <= 2000;
   }
 
   @override
@@ -178,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: ColorManager.primaryBlue,
               drawer:drawerWidget(context: context),
               body: ModalProgressHUD(
-                inAsyncCall: isLocation==false,
+                inAsyncCall: isLocation==false ,
                 progressIndicator: const CupertinoActivityIndicator(color: ColorManager.primaryBlue,),
                 child: Container(
                   decoration: const BoxDecoration(
@@ -210,6 +213,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
+
+                                  cubit.isEducational==true?
+                                  SizedBox( height: MediaQuery.sizeOf(context).height * .02, ):
+                                  Container(),
+
+                                  cubit.isEducational==true && UserDataFromStorage.attendenceAdminFromStorage==true?
+                                  GestureDetector(
+                                      onTap: (){
+                                        getMyLocation().then((v){
+
+                                          bool inLocation =  isWithin100Meters(
+                                            lat1: cubit.fingureSettingsModel!.location![0],
+                                            lon1: cubit.fingureSettingsModel!.location![1],
+                                            lat2: locationData!.latitude!,
+                                            lon2: locationData!.longitude!,
+                                          );
+
+                                          if(inLocation){
+                                            customPushNavigator(context, const ScanQrCodeBody());
+                                          }
+                                          else{
+                                            toastificationWidget(
+                                                context: context,
+                                                title: 'خارج نطاق المنشاه',
+                                                body: 'الموقع الخاص بيك غير مطابق لموقع المنشاه',
+                                                type: ToastificationType.error
+                                            );
+                                          }
+
+
+                                        });
+                                        // customPushNavigator(context, ScanQrCodeBody());
+                                      },
+                                      child: const ScanQrCodeWidget()
+                                  ):Container(),
 
                                   SizedBox( height: MediaQuery.sizeOf(context).height * .02, ),
 
@@ -243,8 +281,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                           DefaultButton(
                                                               buttonText: 'بصمه الحضور',
-                                                              onPressed: (){
-                                                                _authenticate().then((v){
+                                                              onPressed: ()async{
+                                                                _authenticate().then((v)async{
+                                                                  await cubit.checkUserAttendEarly();
                                                                   cubit.checkTimeToast(autherized: _authorized, context: context, flag: false);
                                                                 });
                                                                 Navigator.pop(context);
@@ -257,10 +296,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                           DefaultButton(
                                                               buttonText: 'بصمه الانصراف',
-                                                              onPressed: (){
-                                                                _authenticate().then((v){
-                                                                  cubit.checkTimeToast(
-                                                                      autherized: _authorized, context: context, flag: true);
+                                                              onPressed: ()async{
+                                                                _authenticate().then((v)async{
+                                                                  await cubit.checkUserAttendLate();
+                                                                  cubit.checkTimeToast(autherized: _authorized, context: context, flag: true);
                                                                 });
                                                                 Navigator.pop(context);
                                                               },
@@ -274,9 +313,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),);
                                             }
                                             else{
-                                              _authenticate().then((v){
-                                                cubit.checkTimeToast(autherized: _authorized, context: context, flag: false);
-                                              });
+
+                                              showDialog(context: context, builder: (builder)=>
+                                                  AlertDialog(
+                                                    title:Text(' مرحبا بك في نظام البصمه \n اختار نوع البصمه',style: TextStyles.textStyle18Bold.copyWith(
+                                                        fontSize: 18,
+                                                        color: ColorManager.primaryBlue
+                                                    ),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                    content: Container(
+                                                      height: MediaQuery.sizeOf(context).height * .17,
+                                                      child:  Column(
+                                                        children: [
+                                                          SizedBox(height: SizeConfig.height * .02,),
+
+                                                          DefaultButton(
+                                                              buttonText: 'بصمه الحضور',
+                                                              onPressed: ()async{
+                                                                _authenticate().then((v)async{
+                                                                  await cubit.checkUserAttendEarly();
+                                                                  cubit.checkTimeToast(autherized: _authorized, context: context, flag: false);
+                                                                });
+                                                                Navigator.pop(context);
+                                                              },
+                                                              buttonColor: ColorManager.primaryBlue,
+                                                              large: false
+                                                          ),
+
+                                                          const SizedBox(height: 15,),
+
+                                                          DefaultButton(
+                                                              buttonText: 'بصمه الانصراف',
+                                                              onPressed: ()async{
+                                                                _authenticate().then((v)async{
+                                                                  await cubit.checkUserAttendLate();
+                                                                  cubit.checkTimeToast(autherized: _authorized, context: context, flag: true);
+                                                                });
+                                                                Navigator.pop(context);
+                                                              },
+                                                              buttonColor: ColorManager.primaryBlue,
+                                                              large: false
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),);
                                             }
                                           }else{
                                             toastificationWidget(
@@ -289,6 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
                                          });
+                                        // customPushNavigator(context, ScanQrCodeBody());
                                       },
                                       child: const FingurePrintWidget()
                                   ),
@@ -326,7 +410,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           DefaultButton(
                                                               buttonText: 'بصمه الحضور',
                                                               onPressed: (){
-                                                                 Navigator.pop(context);
                                                                  customPushNavigator(context, const CameraDedection(isFlag: false,));
                                                                  },
                                                               buttonColor: ColorManager.primaryBlue,
@@ -338,7 +421,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           DefaultButton(
                                                               buttonText: 'بصمه الانصراف',
                                                               onPressed: (){
-                                                                Navigator.pop(context);
                                                                 customPushNavigator(context, const CameraDedection(isFlag: true,));
                                                               },
                                                               buttonColor: ColorManager.primaryBlue,
@@ -351,9 +433,45 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),);
                                             }
                                             else{
-                                              _authenticate().then((v){
-                                                cubit.checkTimeToast(autherized: _authorized, context: context, flag: false);
-                                              });
+
+                                              showDialog(context: context, builder: (builder)=>
+                                                  AlertDialog(
+                                                    title:Text(' مرحبا بك في نظام البصمه \n اختار نوع البصمه',style: TextStyles.textStyle18Bold.copyWith(
+                                                        fontSize: 18,
+                                                        color: ColorManager.primaryBlue
+                                                    ),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                    content: Container(
+                                                      height: MediaQuery.sizeOf(context).height * .17,
+                                                      child:  Column(
+                                                        children: [
+                                                          SizedBox(height: SizeConfig.height * .02,),
+
+                                                          DefaultButton(
+                                                              buttonText: 'بصمه الحضور',
+                                                              onPressed: (){
+                                                                customPushNavigator(context, const CameraDedection(isFlag: false,));
+                                                              },
+                                                              buttonColor: ColorManager.primaryBlue,
+                                                              large: false
+                                                          ),
+
+                                                          const SizedBox(height: 15,),
+
+                                                          DefaultButton(
+                                                              buttonText: 'بصمه الانصراف',
+                                                              onPressed: (){
+                                                                customPushNavigator(context, const CameraDedection(isFlag: true,));
+                                                              },
+                                                              buttonColor: ColorManager.primaryBlue,
+                                                              large: false
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),);
                                             }
                                           }else{
                                             toastificationWidget(
@@ -404,7 +522,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           DefaultButton(
                                                               buttonText: 'بصمه الحضور',
                                                               onPressed: (){
-                                                                Navigator.pop(context);
                                                                 customPushNavigator(context, const RecordView(isFlag: false,));
                                                               },
                                                               buttonColor: ColorManager.primaryBlue,
@@ -416,7 +533,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           DefaultButton(
                                                               buttonText: 'بصمه الانصراف',
                                                               onPressed: (){
-                                                                Navigator.pop(context);
                                                                 customPushNavigator(context, const RecordView(isFlag: true,));
                                                               },
                                                               buttonColor: ColorManager.primaryBlue,
@@ -429,9 +545,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),);
                                             }
                                             else{
-                                              _authenticate().then((v){
-                                                cubit.checkTimeToast(autherized: _authorized, context: context, flag: false);
-                                              });
+
+                                              showDialog(context: context, builder: (builder)=>
+                                                  AlertDialog(
+                                                    title:Text(' مرحبا بك في نظام البصمه \n اختار نوع البصمه',style: TextStyles.textStyle18Bold.copyWith(
+                                                        fontSize: 18,
+                                                        color: ColorManager.primaryBlue
+                                                    ),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                    content: Container(
+                                                      height: MediaQuery.sizeOf(context).height * .17,
+                                                      child:  Column(
+                                                        children: [
+                                                          SizedBox(height: SizeConfig.height * .02,),
+
+                                                          DefaultButton(
+                                                              buttonText: 'بصمه الحضور',
+                                                              onPressed: (){
+                                                                customPushNavigator(context, const RecordView(isFlag: false,));
+                                                              },
+                                                              buttonColor: ColorManager.primaryBlue,
+                                                              large: false
+                                                          ),
+
+                                                          const SizedBox(height: 15,),
+
+                                                          DefaultButton(
+                                                              buttonText: 'بصمه الانصراف',
+                                                              onPressed: (){
+                                                                customPushNavigator(context, const RecordView(isFlag: true,));
+                                                              },
+                                                              buttonColor: ColorManager.primaryBlue,
+                                                              large: false
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),);
+
                                             }
                                           }else{
                                             toastificationWidget(
@@ -452,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),

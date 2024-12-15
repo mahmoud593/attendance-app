@@ -139,7 +139,7 @@ class ApplogizesViewBody extends StatelessWidget {
                             children: [
                               const Spacer(),
                               Text(cubit.applogizeList[index].status!,style: TextStyles.textStyle18Bold.copyWith(
-                                  color: ColorManager.success,
+                                  color: statusColor(cubit.applogizeList[index].status!),
                                   fontSize: MediaQuery.sizeOf(context).height*.018
                               ),),
 
@@ -161,5 +161,15 @@ class ApplogizesViewBody extends StatelessWidget {
         ),
       );
     });
+  }
+}
+
+Color statusColor(String value){
+  if(value=="تم الموافقة"){
+    return Colors.green;
+  }else if(value=="تم رفض الطلب"){
+    return ColorManager.error;
+  }else{
+    return ColorManager.gray;
   }
 }

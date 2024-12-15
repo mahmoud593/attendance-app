@@ -1,5 +1,8 @@
+import 'package:attendience_app/core/helper/material_navigation.dart';
+import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/notification/controller/notification_cubit.dart';
 import 'package:attendience_app/features/notification/controller/notification_states.dart';
+import 'package:attendience_app/features/notification/presentation/view/general_notification_replies_screen.dart';
 import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
@@ -40,8 +43,8 @@ class _GeneralNotificationScreenState extends State<GeneralNotificationScreen> {
               var cubit=NotificationCubit.get(context);
               return Container(
                 height: double.infinity,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
                     fit: BoxFit.fitHeight,
                     image: AssetImage(AssetsManager.backgroundImage),
                   ),
@@ -80,20 +83,28 @@ class _GeneralNotificationScreenState extends State<GeneralNotificationScreen> {
                                           fontSize: MediaQuery.sizeOf(context).height*.02
                                       ),),
                                     const SizedBox( height: 10, ),
-                                    Text(cubit.generalNotificationList[index].body!,
+                                    Text('${UserDataFromStorage.fullNameFromStorage }، \n${cubit.generalNotificationList[index].body!}',
                                       style: TextStyles.textStyle24Bold.copyWith(
                                           color: ColorManager.black,
                                           fontSize: MediaQuery.sizeOf(context).height*.014
                                       ),),
                                     const SizedBox( height: 10, ),
-                                    Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(cubit.generalNotificationList[index].date!,
-                                        style: TextStyles.textStyle24Bold.copyWith(
-                                            color: ColorManager.black,
-                                            fontSize: MediaQuery.sizeOf(context).height*.014
-                                        ),),
+                                    Row(
+                                      children: [
+                                        Text(cubit.generalNotificationList[index].date!,
+                                          style: TextStyles.textStyle24Bold.copyWith(
+                                              color: ColorManager.black,
+                                              fontSize: MediaQuery.sizeOf(context).height*.014
+                                          ),),
+                                        const Spacer(),
+                                        IconButton(onPressed: (){
+                                          print('Notification Id: ${cubit.generalNotificationList[index].id}');
+                                          customPushNavigator(context, GeneralNotificationRepliesScreen(notificationId:cubit.generalNotificationList[index].id! ,));
+                                        }, icon: const Icon(Icons.comment)),
+                                      ],
                                     ),
+
+
                                   ]
                               ),
                             );

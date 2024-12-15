@@ -7,6 +7,9 @@ import 'package:attendience_app/features/auth/presentaion/controller/auth_states
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/notification/controller/notification_cubit.dart';
 import 'package:attendience_app/features/splash/presentation/view/splash_screen.dart';
+import 'package:attendience_app/features/student_behaver/presentation/controller/student_grade_cubit.dart';
+import 'package:attendience_app/features/student_behaver/presentation/view/record_student_grade_view.dart';
+import 'package:attendience_app/features/student_behaver/presentation/widget/record_student_grade_body.dart';
 import 'package:attendience_app/firebase_options.dart';
 import 'package:attendience_app/styles/theme_manger/theme_manager.dart';
 import 'package:face_camera/face_camera.dart';
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthCubit()..getMacAddress()),
         BlocProvider(create: (context) => ApplogizeCubit()),
         BlocProvider(create: (context) => HomeCubit()),
+        BlocProvider(create: (context) => StudentGradeCubit()),
         BlocProvider(create: (context) => NotificationCubit()),
       ],
       child: BlocConsumer<AuthCubit,AuthStates>(

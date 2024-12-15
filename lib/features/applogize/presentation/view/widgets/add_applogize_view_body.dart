@@ -6,6 +6,7 @@ import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
 import 'package:attendience_app/styles/widets/default_button.dart';
 import 'package:attendience_app/styles/widets/default_text_field.dart';
+import 'package:attendience_app/styles/widets/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,9 +29,10 @@ class _AddApplogizeViewBodyState extends State<AddApplogizeViewBody> {
     return BlocConsumer<ApplogizeCubit,ApplogizeStates>(
         listener: (context, state) {
           if(state is ApplogizeSuccessState){
+            customToast(title: 'تم رفع طلب الاستاذان', color: ColorManager.primaryBlue);
             Navigator.pop(context);
             ApplogizeCubit.get(context).startDate='';
-            ApplogizeCubit.get(context).startDate='';
+            ApplogizeCubit.get(context).endDate='';
             ApplogizeCubit.get(context).reasonController.text='';
             ApplogizeCubit.get(context).image=null;
           }
@@ -60,7 +62,10 @@ class _AddApplogizeViewBodyState extends State<AddApplogizeViewBody> {
                           initialDate: DateTime.now()
                       ).then((value){
                          setState(() {
-                           cubit.startDate=DateFormat.yMd().format(value!);
+                           print(value);
+                           // cubit.startDate=DateFormat.yMd().format(value!);
+                           cubit.startDate=DateFormat('d/MM/yyyy').format(value!);
+                           print(cubit.startDate);
                          });
                       });
                     },
@@ -106,7 +111,9 @@ class _AddApplogizeViewBodyState extends State<AddApplogizeViewBody> {
                           initialDate: DateTime.now()
                       ).then((value){
                         setState(() {
-                          cubit.endDate=DateFormat.yMd().format(value!);
+                          print(value);
+                          cubit.endDate=DateFormat('d/MM/yyyy').format(value!);
+                          print(cubit.endDate);
                         });
                       });
                     },
@@ -133,7 +140,6 @@ class _AddApplogizeViewBodyState extends State<AddApplogizeViewBody> {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height*.025,),
-
 
                   Text(
                     'سبب طلب الاذان',style: TextStyles.textStyle18Bold.copyWith(
@@ -200,10 +206,12 @@ class _AddApplogizeViewBodyState extends State<AddApplogizeViewBody> {
                     onPressed: (){
                       if(formKey.currentState!.validate()){
 
-                        DateTime start = DateTime.parse(cubit.formatDate(cubit.startDate));
-                        DateTime end = DateTime.parse(cubit.formatDate(cubit.endDate));
+                        DateTime startDate = DateFormat("dd/MM/yyyy").parse(cubit.startDate);
+                        DateTime endDate = DateFormat("dd/MM/yyyy").parse(cubit.endDate);
 
-                        int differenceInDays = end.difference(start).inDays;
+                        int differenceInDays = (endDate.difference(startDate).inDays)+1;
+
+                        print('differenceInDays ${differenceInDays}');
 
                         cubit.image !=null?
                         cubit.uploadImage(

@@ -31,8 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void timeDelay({required BuildContext context})  {
     Future.delayed(const Duration(seconds: 2),()
     async{
-      UserDataFromStorage.uIdFromStorage != '' ? customPushNavigator(context, const HomeScreen()) :
-      customPushNavigator(context, const MemberLoginScreen());
+      UserDataFromStorage.uIdFromStorage != '' ? customPushAndRemoveUntil(context, const HomeScreen()) :
+      customPushAndRemoveUntil(context, const MemberLoginScreen());
     }
     );
   }

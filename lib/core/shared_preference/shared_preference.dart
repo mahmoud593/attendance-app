@@ -8,11 +8,16 @@ class UserDataFromStorage {
   static late bool userIsLogin;
   static late bool themeIsDarkMode;
   static late bool onBoardingIsOpen;
+  static late bool emailNotFound;
+  static late bool gradeAdminFromStorage;
+  static late bool attendenceAdminFromStorage;
   static late String userPhoneTypeFromStorage;
   static String languageCodeFromStorage='ar';
   static String languageNameFromStorage="langArabic";
 
   static late String fullNameFromStorage;
+  static late String adminUidFromStorage;
+  static late String adminNameFromStorage;
   static late String emailFromStorage;
   static late String phoneNumberFromStorage;
   static late String countryFromStorage;
@@ -27,6 +32,7 @@ class UserDataFromStorage {
   static late double cReductionFromStorage;
   static late double detectionFromStorage;
   static late double suspendedBalanceFromStorage;
+  static late String macAddressFromStorage;
 
 
   static setFirstTimeApp(bool value) {
@@ -53,15 +59,47 @@ class UserDataFromStorage {
     _setData();
   }
 
+  static setEmailNotFound(bool notFound) {
+    emailNotFound = notFound;
+    _setData();
+  }
+
+  static setGradeAdmin(bool gradeAdmin) {
+    gradeAdminFromStorage = gradeAdmin;
+    _setData();
+  }
+
+  static setAttendenceAdmin(bool attendenceAdmin) {
+    attendenceAdminFromStorage = attendenceAdmin;
+    _setData();
+  }
+
   static  setPhoneType(String value)  {
     userPhoneTypeFromStorage=value;
     _setData();
   }
+
+  static  setAdminUid(String value)  {
+    adminUidFromStorage=value;
+    _setData();
+  }
+
+  static  setAdminName(String value)  {
+    adminNameFromStorage=value;
+    _setData();
+  }
+
+
   static  setAppLanguageCode(String value)  {
     languageCodeFromStorage=value;
     _setData();
   }
 
+
+  static  setMacAddress(String value)  {
+    macAddressFromStorage=value;
+    _setData();
+  }
 
   static  setFullName(String value)  {
     fullNameFromStorage=value;
@@ -156,14 +194,20 @@ class UserDataFromStorage {
     prefs.setBool("firstTime",firstTime);
     prefs.setBool("themeIsDarkMode",themeIsDarkMode);
     prefs.setBool("onBoardingIsOpen",onBoardingIsOpen);
+    prefs.setBool("emailNotFound",emailNotFound);
+    prefs.setBool("attendenceAdminFromStorage",attendenceAdminFromStorage);
+    prefs.setBool("gradeAdminFromStorage",gradeAdminFromStorage);
     prefs.setString("languageCodeFromStorage",languageCodeFromStorage);
     prefs.setString("languageNameFromStorage",languageNameFromStorage);
 
     prefs.setString("fullNameFromStorage",fullNameFromStorage);
     prefs.setString("emailFromStorage",emailFromStorage);
+    prefs.setString("adminUidFromStorage",adminUidFromStorage);
+    prefs.setString("adminNameFromStorage",adminNameFromStorage);
     prefs.setString("phoneNumberFromStorage",phoneNumberFromStorage);
     prefs.setString("countryFromStorage",countryFromStorage);
     prefs.setString("mainGroupFromStorage",mainGroupFromStorage);
+    prefs.setString("macAddressFromStorage",macAddressFromStorage);
     prefs.setString("subGroupFromStorage",subGroupFromStorage);
     prefs.setString("userNameFromStorage",userNameFromStorage);
     prefs.setString("organizationIdFromStorage",organizationIdFromStorage);
@@ -186,12 +230,17 @@ class UserDataFromStorage {
     firstTime = prefs.getBool("firstTime")?? true;
     themeIsDarkMode = prefs.getBool("themeIsDarkMode")?? false;
     onBoardingIsOpen = prefs.getBool("onBoardingIsOpen")?? false;
+    emailNotFound = prefs.getBool("emailNotFound")?? false;
+    attendenceAdminFromStorage = prefs.getBool("attendenceAdminFromStorage")?? false;
+    gradeAdminFromStorage = prefs.getBool("gradeAdminFromStorage")?? false;
     languageCodeFromStorage = prefs.getString("languageCodeFromStorage")??'ar';
     languageNameFromStorage = prefs.getString("languageNameFromStorage")??'langArabic';
     userPhoneTypeFromStorage = prefs.getString("userPhoneTypeFromStorage")??'';
 
     fullNameFromStorage = prefs.getString("fullNameFromStorage")??'';
     emailFromStorage = prefs.getString("emailFromStorage")??'';
+    adminUidFromStorage = prefs.getString("adminUidFromStorage")??'';
+    adminNameFromStorage = prefs.getString("adminNameFromStorage")??'';
     phoneNumberFromStorage = prefs.getString("phoneNumberFromStorage")??'';
     countryFromStorage = prefs.getString("countryFromStorage")??'';
     mainGroupFromStorage = prefs.getString("mainGroupFromStorage")??'';
@@ -200,6 +249,7 @@ class UserDataFromStorage {
     organizationIdFromStorage = prefs.getString("organizationIdFromStorage")??'';
     folderNumFromStorage = prefs.getString("folderNumFromStorage")??'';
     cityFromStorage = prefs.getString("cityFromStorage")??'';
+    macAddressFromStorage = prefs.getString("macAddressFromStorage")??'';
     uIdFromStorage = prefs.getString("uIdFromStorage")??'';
     cReductionFromStorage = prefs.getDouble("cReductionFromStorage")??0.0;
     balanceFromStorage = prefs.getDouble("balanceFromStorage")??0.0;

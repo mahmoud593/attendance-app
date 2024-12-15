@@ -148,13 +148,20 @@ class _AttendenceNotificationScreenState extends State<AttendenceNotificationScr
                                           fontSize: MediaQuery.sizeOf(context).height*.014
                                       ),),
                                     const SizedBox( height: 10, ),
-                                    Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(cubit.notificationList[index].date!,
-                                        style: TextStyles.textStyle24Bold.copyWith(
-                                            color: ColorManager.black,
-                                            fontSize: MediaQuery.sizeOf(context).height*.014
-                                        ),),
+                                    Row(
+                                      children: [
+                                        Text(cubit.notificationList[index].date!,
+                                          style: TextStyles.textStyle24Bold.copyWith(
+                                              color: ColorManager.black,
+                                              fontSize: MediaQuery.sizeOf(context).height*.014
+                                          ),),
+                                        const Spacer(),
+                                        Text(cubit.notificationList[index].time!,
+                                          style: TextStyles.textStyle24Bold.copyWith(
+                                              color: ColorManager.black,
+                                              fontSize: MediaQuery.sizeOf(context).height*.014
+                                          ),),
+                                      ],
                                     ),
 
                                   ]

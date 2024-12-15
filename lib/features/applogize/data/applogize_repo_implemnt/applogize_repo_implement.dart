@@ -1,5 +1,6 @@
 
 import 'package:attendience_app/core/helper/constants.dart';
+import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/applogize/data/applogize_repo/applogize_repo.dart';
 import 'package:attendience_app/features/applogize/data/models/applogize_model.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -34,7 +35,7 @@ class ApplogizeRepoImplement implements ApplogizeRepo{
           mainGroup: mainGroup,
           status: 'قيد المراجعه',
           subGroup: subGroup,
-          day: DateFormat.yMd().format(DateTime.now()),
+          day: DateFormat('d/MM/yyyy').format(DateTime.now()),
           organizationId: organizationId,
           userName: userName,
           numDays: numDays,
@@ -76,8 +77,11 @@ class ApplogizeRepoImplement implements ApplogizeRepo{
 
       result.children.forEach((element) {
 
-        applogizeList.add(ApplogizeModel.fromJson(element.value as Map<dynamic,dynamic>));
+        ApplogizeModel applogizeModel = ApplogizeModel.fromJson(element.value as Map<dynamic,dynamic>);
 
+        if(applogizeModel.uId == UserDataFromStorage.uIdFromStorage){
+          applogizeList.add(ApplogizeModel.fromJson(element.value as Map<dynamic,dynamic>));
+        }
       });
 
       return applogizeList;

@@ -23,7 +23,10 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>record voice</string>
 	<key>CFBundleName</key>
-
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs camera access to scan QR codes</string>
 	<string>attendience_app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>

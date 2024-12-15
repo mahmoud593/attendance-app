@@ -10,6 +10,8 @@ class MemberModel {
    String? phone;
    String? uId;
    String? macAddress;
+   bool? gradesAdmin;
+   bool? attendanceAdmin;
 
   MemberModel({
     required this.email,
@@ -23,6 +25,8 @@ class MemberModel {
     required this.phone,
     required this.uId,
     required this.macAddress,
+    required this.gradesAdmin,
+    required this.attendanceAdmin,
   });
 
 
@@ -37,6 +41,8 @@ class MemberModel {
     folderNum = json['folderNum']??'';
     phone = json['phone']??'';
     uId = json['uId']??'';
+    gradesAdmin = json['gradesAdmin']??false;
+    attendanceAdmin = json['attendanceAdmin']??false;
     macAddress = json['macAddress']??'';
   }
 

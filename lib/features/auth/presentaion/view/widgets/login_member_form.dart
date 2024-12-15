@@ -91,26 +91,26 @@ class LoginMemberForm extends StatelessWidget {
 
                  SizedBox(height: SizeConfig.height * .02,),
 
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     Text('ليس لديك حساب ؟',style: TextStyles.textStyle18Medium.copyWith(
-                         color: ColorManager.black,
-                         fontSize: SizeConfig.height * .017
-                     ),),
-
-                     TextButton(
-                       onPressed: (){
-                         customPushNavigator(context,const MemberRegisterScreen() );
-                       },
-                       child: Text('انشاء حساب',
-                         style: TextStyles.textStyle18Bold.copyWith(
-                             color: ColorManager.primaryBlue,
-                             fontSize: SizeConfig.height * .017
-                         ),
-                       ),)
-                   ],
-                 )
+                 // Row(
+                 //   mainAxisAlignment: MainAxisAlignment.center,
+                 //   children: [
+                 //     Text('ليس لديك حساب ؟',style: TextStyles.textStyle18Medium.copyWith(
+                 //         color: ColorManager.black,
+                 //         fontSize: SizeConfig.height * .017
+                 //     ),),
+                 //
+                 //     TextButton(
+                 //       onPressed: (){
+                 //         customPushNavigator(context,const MemberRegisterScreen() );
+                 //       },
+                 //       child: Text('انشاء حساب',
+                 //         style: TextStyles.textStyle18Bold.copyWith(
+                 //             color: ColorManager.primaryBlue,
+                 //             fontSize: SizeConfig.height * .017
+                 //         ),
+                 //       ),)
+                 //   ],
+                 // )
 
                ],
              ),

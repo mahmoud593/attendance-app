@@ -69,8 +69,10 @@ class _CameraDedectionState extends State<CameraDedection> {
                                 child: ElevatedButton(
                                     onPressed: () async {
                                       if(widget.isFlag){
+                                        await HomeCubit.get(context).checkUserAttendEarly();
                                         HomeCubit.get(context).checkTimeToast(autherized: 'Authorized', context: context, flag: true);
                                       }else{
+                                        await HomeCubit.get(context).checkUserAttendEarly();
                                         HomeCubit.get(context).checkTimeToast(autherized: 'Authorized', context: context, flag: false);
                                       }
                                       Navigator.pop(context);

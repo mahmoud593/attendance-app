@@ -3,6 +3,7 @@ class NotificationModel {
   String? body;
   String? uId;
   String? date;
+  String? time;
 
 
   NotificationModel({
@@ -10,6 +11,7 @@ class NotificationModel {
     required this.body,
     required this.uId,
     required this.date,
+    required this.time,
   });
 
 
@@ -18,6 +20,7 @@ class NotificationModel {
     body = json['body']??'';
     uId = json['uId']??'';
     date = json['date']??'';
+    time = json['time']??'';
   }
 
   Map<String, dynamic> toJson() {
@@ -26,6 +29,7 @@ class NotificationModel {
     data['body'] = body;
     data['uId'] = uId;
     data['date'] = date;
+    data['time'] = time;
     return data;
   }
 }

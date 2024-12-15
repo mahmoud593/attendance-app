@@ -32,6 +32,7 @@ abstract class AuthRepo{
 
   Future<MemberModel> getMemberInfo({required String memberId,required String macAddress,});
 
+  Future<MemberModel> getEducationalMemberInfo({required String memberId});
 
 
 }
