@@ -49,72 +49,77 @@ class _GeneralNotificationScreenState extends State<GeneralNotificationScreen> {
                     image: AssetImage(AssetsManager.backgroundImage),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: state is GetGeneralNotificationLoadingState?
-                    const Center(child: CupertinoActivityIndicator(),)
-                    :Column(
-                    children: [
+                child: RefreshIndicator(
+                  onRefresh: ()async {
+                    NotificationCubit.get(context).getGeneralNotificationNotification();
+                  },
+                  child: SingleChildScrollView(
+                    child: state is GetGeneralNotificationLoadingState?
+                      const Center(child: CircularProgressIndicator(color: ColorManager.primaryBlue,),)
+                      :Column(
+                      children: [
 
-                      SizedBox( height: MediaQuery.sizeOf(context).height*.02, ),
+                        SizedBox( height: MediaQuery.sizeOf(context).height*.02, ),
 
-                      ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: MediaQuery.sizeOf(context).height*.02,
-                                vertical: MediaQuery.sizeOf(context).height*.02,
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                horizontal: MediaQuery.sizeOf(context).height*.02,
-                                vertical: MediaQuery.sizeOf(context).height*.003,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: ColorManager.gray,
-                              ),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(cubit.generalNotificationList[index].title!,
-                                      style: TextStyles.textStyle24Bold.copyWith(
-                                          color: ColorManager.primaryBlue,
-                                          fontSize: MediaQuery.sizeOf(context).height*.02
-                                      ),),
-                                    const SizedBox( height: 10, ),
-                                    Text('${UserDataFromStorage.fullNameFromStorage }، \n${cubit.generalNotificationList[index].body!}',
-                                      style: TextStyles.textStyle24Bold.copyWith(
-                                          color: ColorManager.black,
-                                          fontSize: MediaQuery.sizeOf(context).height*.014
-                                      ),),
-                                    const SizedBox( height: 10, ),
-                                    Row(
-                                      children: [
-                                        Text(cubit.generalNotificationList[index].date!,
-                                          style: TextStyles.textStyle24Bold.copyWith(
-                                              color: ColorManager.black,
-                                              fontSize: MediaQuery.sizeOf(context).height*.014
-                                          ),),
-                                        const Spacer(),
-                                        IconButton(onPressed: (){
-                                          print('Notification Id: ${cubit.generalNotificationList[index].id}');
-                                          customPushNavigator(context, GeneralNotificationRepliesScreen(notificationId:cubit.generalNotificationList[index].id! ,));
-                                        }, icon: const Icon(Icons.comment)),
-                                      ],
-                                    ),
+                        ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: MediaQuery.sizeOf(context).height*.02,
+                                  vertical: MediaQuery.sizeOf(context).height*.02,
+                                ),
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: MediaQuery.sizeOf(context).height*.02,
+                                  vertical: MediaQuery.sizeOf(context).height*.003,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: ColorManager.gray,
+                                ),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(cubit.generalNotificationList[index].title!,
+                                        style: TextStyles.textStyle24Bold.copyWith(
+                                            color: ColorManager.primaryBlue,
+                                            fontSize: MediaQuery.sizeOf(context).height*.02
+                                        ),),
+                                      const SizedBox( height: 10, ),
+                                      Text('${UserDataFromStorage.fullNameFromStorage }، \n${cubit.generalNotificationList[index].body!}',
+                                        style: TextStyles.textStyle24Bold.copyWith(
+                                            color: ColorManager.black,
+                                            fontSize: MediaQuery.sizeOf(context).height*.014
+                                        ),),
+                                      const SizedBox( height: 10, ),
+                                      Row(
+                                        children: [
+                                          Text(cubit.generalNotificationList[index].date!,
+                                            style: TextStyles.textStyle24Bold.copyWith(
+                                                color: ColorManager.black,
+                                                fontSize: MediaQuery.sizeOf(context).height*.014
+                                            ),),
+                                          const Spacer(),
+                                          IconButton(onPressed: (){
+                                            print('Notification Id: ${cubit.generalNotificationList[index].id}');
+                                            customPushNavigator(context, GeneralNotificationRepliesScreen(notificationId:cubit.generalNotificationList[index].id! ,));
+                                          }, icon: const Icon(Icons.comment)),
+                                        ],
+                                      ),
 
 
-                                  ]
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) => const SizedBox( height: 10, ),
-                          itemCount: cubit.generalNotificationList.length
-                      ),
+                                    ]
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) => const SizedBox( height: 10, ),
+                            itemCount: cubit.generalNotificationList.length
+                        ),
 
-                    ],
-                                    ),
+                      ],
+                                      ),
+                  ),
                 ),
               );
             },

@@ -24,7 +24,7 @@ class MemberLoginScreen extends StatelessWidget {
             backgroundColor: ColorManager.primaryBlue,
             body: ModalProgressHUD(
               inAsyncCall: state is LoginMemberLoadingState,
-              progressIndicator: const CupertinoActivityIndicator(),
+              progressIndicator: const CircularProgressIndicator(color: ColorManager.primaryBlue,),
               child: SingleChildScrollView(
                 child: Container(
                   height: SizeConfig.height,

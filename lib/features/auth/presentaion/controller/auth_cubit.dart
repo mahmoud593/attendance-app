@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:attendience_app/core/helper/constants.dart';
 import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/auth/data/auth_repo_implement/auth_repo_implement.dart';
+import 'package:attendience_app/features/auth/data/models/member_model.dart';
 import 'package:attendience_app/features/auth/presentaion/controller/auth_states.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/widets/toast.dart';
@@ -79,10 +80,12 @@ class AuthCubit extends Cubit<AuthStates> {
       if (Platform.isIOS) { // import 'dart:io'
         var iosDeviceInfo = await deviceInfo.iosInfo;
         macAddress= iosDeviceInfo.identifierForVendor; // unique ID on iOS
+        UserDataFromStorage.setMacAddress(macAddress!);
         print('MAC Address: $macAddress');
       } else if(Platform.isAndroid) {
         var androidDeviceInfo = await deviceInfo.androidInfo;
-        macAddress= androidDeviceInfo.id; // unique ID on Android
+        macAddress= androidDeviceInfo.id; // un
+        UserDataFromStorage.setMacAddress(macAddress!); // ique ID on Android
         print('MAC Address: $macAddress');
       }
       //
@@ -187,6 +190,36 @@ class AuthCubit extends Cubit<AuthStates> {
   }
 
 }
+
+  Future<void> getHomeMember({
+    required String memberId,
+    required String macAddress,
+  })async {
+
+    MemberModel? memberModel;
+
+    var response = await Constants.database.child('members').child(memberId).get();
+
+    memberModel = MemberModel.fromJson(response.value as Map<dynamic,dynamic>);
+
+    UserDataFromStorage.setMacAddress(macAddress);
+    UserDataFromStorage.setUid(memberId);
+    UserDataFromStorage.setAdminName(memberModel.fullName!);
+    UserDataFromStorage.setAttendenceAdmin(memberModel.attendanceAdmin!);
+    UserDataFromStorage.setGradeAdmin(memberModel.gradesAdmin!);
+
+    UserDataFromStorage.setEmail(memberModel.email!);
+    UserDataFromStorage.setPhoneNumber(memberModel.phone!);
+    UserDataFromStorage.setMainGroup(memberModel.mainGroup!);
+    UserDataFromStorage.setSubGroup(memberModel.subGroup!);
+    UserDataFromStorage.setFullName(memberModel.fullName!);
+    UserDataFromStorage.setUserName(memberModel.userName!);
+    UserDataFromStorage.setFolderNum(memberModel.folderNum!);
+    UserDataFromStorage.setOrganizationId(memberModel.organizationId!);
+
+    print('Get member info : ${memberModel.email}');
+
+  }
 
 
 }

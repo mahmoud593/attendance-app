@@ -4,8 +4,10 @@ import 'package:attendience_app/features/student_behaver/presentation/controller
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/widets/toast.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class StudentGradeCubit extends Cubit<StudentGradeStates>{
 
@@ -66,6 +68,7 @@ class StudentGradeCubit extends Cubit<StudentGradeStates>{
   Future<void> uploadStudentFailGrades({
     required String grade,
     required String type,
+    required String reason,
     required String studentId,
   })async{
 
@@ -85,6 +88,8 @@ class StudentGradeCubit extends Cubit<StudentGradeStates>{
         'uId':ref.key,
         'grade' : grade,
         'type':type,
+        'date': DateFormat.yMMMd().format(DateTime.now()),
+        'reason':reason,
         'teacherName':UserDataFromStorage.adminNameFromStorage,
       });
       customToast(title: 'تم الارسال', color: ColorManager.primaryBlue);
@@ -95,6 +100,7 @@ class StudentGradeCubit extends Cubit<StudentGradeStates>{
     }
 
   }
+
 
 
 

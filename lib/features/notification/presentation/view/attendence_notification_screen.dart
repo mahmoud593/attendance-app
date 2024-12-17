@@ -66,7 +66,7 @@ class _AttendenceNotificationScreenState extends State<AttendenceNotificationScr
                 ),
                 child: SingleChildScrollView(
                   child: state is GetAttendenceNotificationLoadingState ?
-                  const Center(child: CupertinoActivityIndicator(),):
+                  const Center(child: CircularProgressIndicator(color: ColorManager.primaryBlue,),):
                   Column(
                     children: [
 

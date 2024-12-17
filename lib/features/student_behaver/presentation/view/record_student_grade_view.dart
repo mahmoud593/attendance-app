@@ -28,11 +28,10 @@ class RecordStudentGradeView extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed:()async{
-              await AuthRepoImplement().getMemberInfo(
+              AuthCubit.get(context).getHomeMember(
                   memberId: UserDataFromStorage.adminUidFromStorage,
                   macAddress: UserDataFromStorage.macAddressFromStorage
               ).then((value){
-                print(value.fullName);
               });
               customPushAndRemoveUntil(context, HomeScreen());
             } ,
@@ -49,10 +48,11 @@ class RecordStudentGradeView extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: ()async{
-          await AuthRepoImplement().getMemberInfo(
+          AuthCubit.get(context).getHomeMember(
               memberId: UserDataFromStorage.adminUidFromStorage,
               macAddress: UserDataFromStorage.macAddressFromStorage
-          );
+          ).then((value){
+          });
           customPushAndRemoveUntil(context, const HomeScreen());
           return true;
         } ,

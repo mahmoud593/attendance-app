@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:attendience_app/core/helper/app_size_config.dart';
 import 'package:attendience_app/core/helper/material_navigation.dart';
+import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
+import 'package:attendience_app/features/student_behaver/presentation/view/record_student_grade_view.dart';
 import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
@@ -35,6 +38,8 @@ class _StudentBehaverBodyState extends State<StudentBehaverBody> {
       controller!.resumeCamera();
     }
   }
+  bool isProcessing = false;
+
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
@@ -48,16 +53,35 @@ class _StudentBehaverBodyState extends State<StudentBehaverBody> {
       }
     });
 
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
+      if (isProcessing) return;
+
       setState(() {
+        isProcessing = true;
         result = scanData;
-        HomeCubit.get(context).getEducationalMemberInfo(memberId: result!.code.toString(),context: context, attendence: false);
-        return;
       });
-    });
+
+      try {
+        print('suiiiiiiiiiiii');
+        await HomeCubit.get(context).getEducationalMemberInfo(
+          memberId: result!.code.toString(),
+          context: context,
+          attendence: false,
+        );
+
+      } catch (e) {
+        print(e);
+      } finally {
+        setState(() {
+
+          isProcessing = false;
+        });
+      }
 
 
   }
+
+  );}
 
 
   @override
@@ -73,12 +97,30 @@ class _StudentBehaverBodyState extends State<StudentBehaverBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeStates>(
+    return BlocConsumer<HomeCubit, HomeStates>(
         builder:(context, state) {
-          return  ModalProgressHUD(
-            inAsyncCall: state is GetEducationalMembersLoadingState || state is RecordEducationalAttendenceLoadingState,
-            progressIndicator: const CupertinoActivityIndicator() ,
-            child: Column(
+          return  state is GetEducationalMembersLoadingState || state is RecordEducationalAttendenceLoadingState?
+          Container(
+            width: SizeConfig.width,
+            height:  SizeConfig.height,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: AssetImage(AssetsManager.backgroundImage),
+              ),
+              color: ColorManager.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(SizeConfig.height * .07),
+                topRight: Radius.circular(SizeConfig.height * .07),
+              ),
+            ),
+            child: const Center(
+              child: CircularProgressIndicator(
+                color: ColorManager.primaryBlue,
+              ),
+            ),
+          ):
+          Column(
               children: <Widget>[
                 Container(
                   padding:  const EdgeInsets.only(
@@ -122,9 +164,18 @@ class _StudentBehaverBodyState extends State<StudentBehaverBody> {
                   ),
                 )
               ],
-            ),
-          );
-        }
+            );
+        },
+        listener: (context, state) {
+          if(state is GetEducationalMembersSuccess2State){
+            customPushNavigator(context, RecordStudentGradeView(
+              studentId: result!.code.toString() ,
+              studentMainGroup: UserDataFromStorage.mainGroupFromStorage,
+              studentName: UserDataFromStorage.fullNameFromStorage,
+              studentSubGroup: UserDataFromStorage.subGroupFromStorage,
+            ));
+          }
+        },
     );
   }
 }

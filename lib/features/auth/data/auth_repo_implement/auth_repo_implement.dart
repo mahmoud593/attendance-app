@@ -136,6 +136,7 @@ class AuthRepoImplement implements AuthRepo{
        if(memberModel.email == email && memberModel.password == password){
          print('Login as member : ${memberModel.userName}');
 
+         print('Login as member : ${memberModel.uId}');
          UserDataFromStorage.setUid(memberModel.uId!);
          UserDataFromStorage.setAdminUid(memberModel.uId!);
          UserDataFromStorage.setEmailNotFound(true);

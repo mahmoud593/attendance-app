@@ -127,20 +127,20 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
-              body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+              body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           recordDailyEarlyAttendence(
               earlyFingure: 'متاخر و سجل غائب',
-              notification: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+              notification: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
               earlyFingureTime: DateFormat.Hms().format(DateTime.now())
           );
 
           toastificationWidget(
               context: context,
               title: 'تسجيل الحضور',
-              body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+              body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
               type: ToastificationType.error
           );
           return;
@@ -159,20 +159,20 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
-              body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+              body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           recordDailyEarlyAttendence(
               earlyFingure: 'متاخر و سجل غائب',
-              notification: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+              notification: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
               earlyFingureTime: DateFormat.Hms().format(DateTime.now())
           );
 
           toastificationWidget(
               context: context,
               title: 'تسجيل الحضور',
-              body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+              body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
               type: ToastificationType.error
           );
           return;
@@ -192,12 +192,12 @@ class HomeCubit extends Cubit<HomeStates>{
 
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
-              body: 'شكرا لك تم تسجيل حضورك في المعاد المحدد',
+              body: 'حضر في الموعد المحدد لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           recordDailyEarlyAttendence(
-              earlyFingure: 'حضر في الموعد المحدد',
+              earlyFingure: 'حضر في الموعد المحدد لهذا اليوم',
               notification: '',
               earlyFingureTime: DateFormat.Hms().format(DateTime.now())
           );
@@ -205,7 +205,7 @@ class HomeCubit extends Cubit<HomeStates>{
           toastificationWidget(
               context: context,
               title: 'تسجيل الحضور',
-              body: 'شكرا لك تم تسجيل حضورك في المعاد المحدد',
+              body: 'حضر في الموعد المحدد لهذا اليوم',
               type: ToastificationType.success
           );
           return;
@@ -224,12 +224,12 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
-              body: 'تم تسجيل حضورك ف المعاد المحدد',
+              body: 'حضر في الموعد المحدد لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           recordDailyEarlyAttendence(
-              earlyFingure: 'حضر في الموعد المحدد',
+              earlyFingure: 'حضر في الموعد المحدد لهذا اليوم',
               notification: '',
               earlyFingureTime: DateFormat.Hms().format(DateTime.now())
           );
@@ -237,7 +237,7 @@ class HomeCubit extends Cubit<HomeStates>{
           toastificationWidget(
               context: context,
               title: 'تسجيل الحضور',
-              body: 'تم تسجيل حضورك ف المعاد المحدد',
+              body: 'حضر في الموعد المحدد لهذا اليوم',
               type: ToastificationType.success
           );
           return;
@@ -257,20 +257,20 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
-              body: ' متاخر عن موعد الحضور وتم تسجيلك متاخر',
+              body: 'تم تسجيلك متاخر عن الدوام لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           recordDailyEarlyAttendence(
               earlyFingure: 'متاخر و سجل متاخر',
-              notification: 'متاخر عن موعد الحضور وتم تسجيلك متاخر',
+              notification: 'تم تسجيلك متاخر عن الدوام لهذا اليوم',
               earlyFingureTime: DateFormat.Hms().format(DateTime.now())
           );
 
           toastificationWidget(
               context: context,
               title: 'تسجيل الحضور',
-              body: ' تم التاخير عن المعاد المحدد وتم تسجيلك متاخر',
+              body: 'تم تسجيلك متاخر عن الدوام لهذا اليوم',
               type: ToastificationType.error
           );
           return;
@@ -325,12 +325,12 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الانصراف',
-              body: 'شكرا لك تم تسجيل انصرافك في المعاد المحدد',
+              body: 'تم تسجيلك انصراف حسب الموعد لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           recordDailyLateAttendence(
-            lateFingure: 'انصرف في الموعد المحدد',
+            lateFingure: 'تم تسجيلك انصراف حسب الموعد لهذا اليوم',
             notification: '',
             lateFingureTime: DateFormat.Hms().format(DateTime.now()),
           );
@@ -338,7 +338,7 @@ class HomeCubit extends Cubit<HomeStates>{
           toastificationWidget(
               context: context,
               title: 'تسجيل الانصراف',
-              body: 'شكرا لك تم تسجيل انصرافك في المعاد المحدد',
+              body: 'تم تسجيلك انصراف حسب الموعد لهذا اليوم',
               type: ToastificationType.success
           );
           return;
@@ -357,20 +357,20 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           recordDailyLateAttendence(
             lateFingure: 'منصرف مبكرا',
-            notification: 'الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+            notification: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
             lateFingureTime: DateFormat.Hms().format(DateTime.now()),
           );
 
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الانصراف',
-              body: ' الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+              body: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           toastificationWidget(
               context: context,
               title: 'تسجيل الانصراف',
-              body: ' الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+              body: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
               type: ToastificationType.error
           );
           return;
@@ -389,20 +389,20 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           recordDailyLateAttendence(
             lateFingure: 'منصرف مبكرا',
-            notification: 'الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+            notification: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
             lateFingureTime: DateFormat.Hms().format(DateTime.now()),
           );
 
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الانصراف',
-              body: ' الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+              body: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           toastificationWidget(
               context: context,
               title: 'تسجيل الانصراف',
-              body: ' الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+              body: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
               type: ToastificationType.error
           );
           return;
@@ -421,20 +421,20 @@ class HomeCubit extends Cubit<HomeStates>{
         }else{
           recordDailyLateAttendence(
             lateFingure: 'منصرف مبكرا',
-            notification: 'الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+            notification: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
             lateFingureTime: DateFormat.Hms().format(DateTime.now()),
           );
 
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الانصراف',
-              body: ' الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+              body: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
               date: DateFormat('yyyy-MM-dd').format(DateTime.now())
           );
 
           toastificationWidget(
               context: context,
               title: 'تسجيل الانصراف',
-              body: ' الوقت مبكر عن موعد الحضور وتم تسجيلك منصر مبكر',
+              body: 'تم تسجيلك انصراف مبكر عن الدوام لهذا اليوم',
               type: ToastificationType.error
           );
           return;
@@ -468,17 +468,22 @@ class HomeCubit extends Cubit<HomeStates>{
     if(status=='absent'){
 
       if(foundUserAttendEarly==true){
-
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيل بصمه الحضور من قبل',
+            type: ToastificationType.error
+        );
       }else{
         NotificationCubit.get(context).addAttendenceNotification(
             title: 'بصمه الحضور',
-            body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+            body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
             date: DateFormat('yyyy-MM-dd').format(DateTime.now())
         );
 
         recordDailyEarlyAttendence(
             earlyFingure: 'متاخر و سجل غائب',
-            notification: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+            notification: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
@@ -492,7 +497,7 @@ class HomeCubit extends Cubit<HomeStates>{
         customPushNavigator(context, const DoneRecordStudentBody(
             image: AssetsManager.sad,
             color: ColorManager.error,
-            title: 'متاخر عن موعد الحضور وتم تسجيلك غياب')
+            title: 'تم تسجيلك غياب عن الدوام لهذا اليوم')
         );
         emit(RecordEducationalAttendenceSuccessState());
         return;
@@ -505,17 +510,22 @@ class HomeCubit extends Cubit<HomeStates>{
     else if(status=='too absent'){
 
       if(foundUserAttendEarly==true){
-
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيل بصمه الحضور من قبل',
+            type: ToastificationType.error
+        );
       }else{
         NotificationCubit.get(context).addAttendenceNotification(
             title: 'بصمه الحضور',
-            body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+            body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
             date: DateFormat('yyyy-MM-dd').format(DateTime.now())
         );
 
         recordDailyEarlyAttendence(
             earlyFingure: 'متاخر و سجل غائب',
-            notification: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
+            notification: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
@@ -529,7 +539,7 @@ class HomeCubit extends Cubit<HomeStates>{
         customPushNavigator(context, const DoneRecordStudentBody(
             image: AssetsManager.sad,
             color: ColorManager.error,
-            title: 'متاخر عن موعد الحضور وتم تسجيلك غياب')
+            title: 'تم تسجيلك غياب عن الدوام لهذا اليوم')
         );
         emit(RecordEducationalAttendenceSuccessState());
         return;
@@ -541,16 +551,21 @@ class HomeCubit extends Cubit<HomeStates>{
     else if (status=='Early') {
 
       if(foundUserAttendEarly==true){
-
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيل بصمه الحضور من قبل',
+            type: ToastificationType.error
+        );
       }else{
         NotificationCubit.get(context).addAttendenceNotification(
             title: 'بصمه الحضور',
-            body: 'شكرا لك تم تسجيل حضورك في المعاد المحدد',
+            body: 'حضر في الموعد المحدد لهذا اليوم',
             date: DateFormat('yyyy-MM-dd').format(DateTime.now())
         );
 
         recordDailyEarlyAttendence(
-            earlyFingure: 'حضر في الموعد المحدد',
+            earlyFingure: 'حضر في الموعد المحدد لهذا اليوم',
             notification: '',
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
@@ -565,7 +580,7 @@ class HomeCubit extends Cubit<HomeStates>{
         customPushNavigator(context, const DoneRecordStudentBody(
             image: AssetsManager.happy,
             color: ColorManager.primaryBlue,
-            title: 'شكرا لك تم تسجيل حضورك في المعاد المحدد')
+            title: 'حضر في الموعد المحدد لهذا اليوم')
         );
         emit(RecordEducationalAttendenceSuccessState());
         return;
@@ -577,16 +592,21 @@ class HomeCubit extends Cubit<HomeStates>{
     else if (status=='Not early' ){
 
       if(foundUserAttendEarly==true){
-
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيل بصمه الحضور من قبل',
+            type: ToastificationType.error
+        );
       }else{
         NotificationCubit.get(context).addAttendenceNotification(
             title: 'بصمه الحضور',
-            body: 'تم تسجيل حضورك ف المعاد المحدد',
+            body: 'حضر في الموعد المحدد لهذا اليوم',
             date: DateFormat('yyyy-MM-dd').format(DateTime.now())
         );
 
         recordDailyEarlyAttendence(
-            earlyFingure: 'حضر في الموعد المحدد',
+            earlyFingure: 'حضر في الموعد المحدد لهذا اليوم',
             notification: '',
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
@@ -601,7 +621,7 @@ class HomeCubit extends Cubit<HomeStates>{
         customPushNavigator(context, const DoneRecordStudentBody(
             image: AssetsManager.happy,
             color: ColorManager.primaryBlue,
-            title: 'تم تسجيل حضورك ف المعاد المحدد')
+            title: 'حضر في الموعد المحدد لهذا اليوم')
         );
         emit(RecordEducationalAttendenceSuccessState());
         return;
@@ -615,17 +635,22 @@ class HomeCubit extends Cubit<HomeStates>{
     else if (status=='Late') {
 
       if(foundUserAttendEarly==true){
-
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيل بصمه الحضور من قبل',
+            type: ToastificationType.error
+        );
       }else{
         NotificationCubit.get(context).addAttendenceNotification(
             title: 'بصمه الحضور',
-            body: ' متاخر عن موعد الحضور وتم تسجيلك متاخر',
+            body: 'تم تسجيلك متاخر عن الدوام لهذا اليوم',
             date: DateFormat('yyyy-MM-dd').format(DateTime.now())
         );
 
         recordDailyEarlyAttendence(
             earlyFingure: 'متاخر و سجل متاخر',
-            notification: 'متاخر عن موعد الحضور وتم تسجيلك متاخر',
+            notification: 'تم تسجيلك متاخر عن الدوام لهذا اليوم',
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
@@ -639,7 +664,7 @@ class HomeCubit extends Cubit<HomeStates>{
         customPushNavigator(context, const DoneRecordStudentBody(
             image: AssetsManager.sad,
             color: ColorManager.error,
-            title: ' تم التاخير عن المعاد المحدد وتم تسجيلك متاخر')
+            title: 'تم تسجيلك متاخر عن الدوام لهذا اليوم')
         );
         emit(RecordEducationalAttendenceSuccessState());
         return;
@@ -810,21 +835,20 @@ class HomeCubit extends Cubit<HomeStates>{
   Future<void> getEducationalMemberInfo({required String memberId,required BuildContext context,required bool attendence})async{
     emit(GetEducationalMembersLoadingState());
     try{
+      UserDataFromStorage.setUid(memberId);
+
       var response =await AuthRepoImplement().getEducationalMemberInfo(memberId: memberId);
+      print('Member id : $memberId');
       await checkUserAttendEarly();
 
       if(attendence){
-        await recordEducationalAttendence(context: context);
+        emit(GetEducationalMembersSuccess1State());
       }else{
-        customPushNavigator(context, RecordStudentGradeView(
-          studentId: memberId ,
-          studentMainGroup: UserDataFromStorage.mainGroupFromStorage,
-          studentName: UserDataFromStorage.fullNameFromStorage,
-          studentSubGroup: UserDataFromStorage.subGroupFromStorage,
-        ));
+
+        emit(GetEducationalMembersSuccess2State());
+
       }
 
-      emit(GetEducationalMembersSuccessState());
     }catch(e){
 
       print('Error in getEducationalMemberInfo : ${e.toString()}');

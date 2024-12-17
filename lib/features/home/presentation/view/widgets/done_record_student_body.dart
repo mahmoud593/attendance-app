@@ -1,4 +1,7 @@
 import 'package:attendience_app/core/helper/app_size_config.dart';
+import 'package:attendience_app/core/shared_preference/shared_preference.dart';
+import 'package:attendience_app/features/auth/presentaion/controller/auth_cubit.dart';
+import 'package:attendience_app/features/home/presentation/view/screens/home_screen.dart';
 import 'package:attendience_app/styles/assets/asset_manager.dart';
 import 'package:attendience_app/styles/colors/color_manager.dart';
 import 'package:attendience_app/styles/text_styles/text_styles.dart';
@@ -21,8 +24,13 @@ class DoneRecordStudentBody extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
         onPressed: (){
-          customPushAndRemoveUntil(context, ScanQrCodeBody());
-        }, icon: const Icon(Icons.arrow_back_ios,color: ColorManager.black,),),
+          AuthCubit.get(context).getHomeMember(
+              memberId: UserDataFromStorage.adminUidFromStorage,
+              macAddress: UserDataFromStorage.macAddressFromStorage
+          ).then((value){
+          });
+          customPushAndRemoveUntil(context, const HomeScreen());
+          }, icon: const Icon(Icons.arrow_back_ios,color: ColorManager.black,),),
         backgroundColor: ColorManager.white,
         elevation: 0,
         centerTitle: true,
@@ -33,7 +41,12 @@ class DoneRecordStudentBody extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: (){
-          customPushAndRemoveUntil(context, const ScanQrCodeBody());
+          AuthCubit.get(context).getHomeMember(
+              memberId: UserDataFromStorage.adminUidFromStorage,
+              macAddress: UserDataFromStorage.macAddressFromStorage
+          ).then((value){
+          });
+          customPushAndRemoveUntil(context, const HomeScreen());
           return Future.value(true);
         },
         child: Container(
@@ -80,6 +93,11 @@ class DoneRecordStudentBody extends StatelessWidget {
 
                     buttonColor: ColorManager.primaryBlue,
                     onPressed: () {
+                      AuthCubit.get(context).getHomeMember(
+                          memberId: UserDataFromStorage.adminUidFromStorage,
+                          macAddress: UserDataFromStorage.macAddressFromStorage
+                      ).then((value){
+                      });
                       customPushAndRemoveUntil(context, ScanQrCodeBody());
                     },
                     large: false,

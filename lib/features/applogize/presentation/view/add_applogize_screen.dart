@@ -30,7 +30,7 @@ class AddApplogizeScreen extends StatelessWidget {
           builder: (context, state) {
             return ModalProgressHUD(
               inAsyncCall: state is ApplogizeLoadingState || state is UploadImageLoadingState,
-              progressIndicator: const CupertinoActivityIndicator(),
+              progressIndicator: const CircularProgressIndicator(color: ColorManager.primaryBlue,),
               child: Container(
                 decoration: BoxDecoration(
                   image: const DecorationImage(

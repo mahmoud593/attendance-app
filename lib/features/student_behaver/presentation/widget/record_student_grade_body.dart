@@ -230,6 +230,7 @@ class RecordStudentGradeBody extends StatelessWidget {
                                   studentId: studentId
                               ):cubit.uploadStudentFailGrades(
                                   type: 'fail',
+                                  reason: commentController.text,
                                   grade: gradeController.text ,
                                   studentId: studentId
                               );

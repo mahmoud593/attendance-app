@@ -53,7 +53,7 @@ class _GeneralNotificationRepliesScreenState extends State<GeneralNotificationRe
                 ),
               ),
               child: state is GetGeneralNotificationLoadingState?
-              const Center(child: CupertinoActivityIndicator(),)
+              const Center(child: CircularProgressIndicator(color: ColorManager.primaryBlue,),)
                   :Column(
                 children: [
 

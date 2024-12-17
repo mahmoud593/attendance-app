@@ -24,7 +24,7 @@ class MemberRegisterScreen extends StatelessWidget {
             backgroundColor: ColorManager.primaryBlue,
             body: ModalProgressHUD(
               inAsyncCall: state is CreateMemberAccountLoadingState,
-              progressIndicator: const CupertinoActivityIndicator(),
+              progressIndicator: const CircularProgressIndicator(color: ColorManager.primaryBlue,),
               child: Container(
                 decoration: const BoxDecoration(
                     color: ColorManager.primaryBlue

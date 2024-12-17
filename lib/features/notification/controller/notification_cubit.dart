@@ -94,6 +94,7 @@ class NotificationCubit extends Cubit<NotificationStates> {
 
       }
 
+      notificationList.sort((x,y)=> y.date!.compareTo(x.date!));
 
       print('Get Attendence Notification');
       emit(GetAttendenceNotificationSuccessState());
@@ -113,39 +114,51 @@ class NotificationCubit extends Cubit<NotificationStates> {
     replies=[];
     emit(GetGeneralNotificationSuccessState());
     try{
-      var  response = await Constants.database.child('organztions').
+        Constants.database.child('organztions').
       child(UserDataFromStorage.organizationIdFromStorage).
-      child('generalNotifications').get();
+      child('generalNotifications').onValue.listen((event) {
+          generalNotificationList=[];
+          replies=[];
+        event.snapshot.children.forEach((element){
 
-      response.children.forEach((element){
+          GeneralNotificationModel generalNotificationModel = GeneralNotificationModel.fromJson(element.value as Map<dynamic,dynamic>);
 
-        GeneralNotificationModel generalNotificationModel = GeneralNotificationModel.fromJson(element.value as Map<dynamic,dynamic>);
+          generalNotificationModel.uIds?.forEach((element) {
+            if(element==UserDataFromStorage.uIdFromStorage){
+              generalNotificationList.add(generalNotificationModel);
+            }
+          });
 
-        generalNotificationModel.uIds?.forEach((element) {
-          if(element==UserDataFromStorage.uIdFromStorage){
-            generalNotificationList.add(generalNotificationModel);
+          generalNotificationList.sort((x,y)=> y.date!.compareTo(x.date!));
+
+          generalNotificationList.forEach((element) {
+            element.date=DateFormat('yyyy-MM-dd').format(DateTime.parse(element.date!));
+          });
+
+
+          replies=[];
+          if(generalNotificationModel.replies!.containsKey(UserDataFromStorage.uIdFromStorage)){
+            generalNotificationModel.replies![UserDataFromStorage.uIdFromStorage].forEach((key, value) {
+              ReplyModel replyModel = ReplyModel.fromJson(value as Map<dynamic,dynamic>);
+              print(replyModel.fromSystem);
+
+              replies.add(replyModel);
+            });
           }
+
         });
 
+        replies.sort((x,y)=> y.date!.compareTo(x.date!));
 
-        replies=[];
-        if(generalNotificationModel.replies!.containsKey(UserDataFromStorage.uIdFromStorage)){
-          generalNotificationModel.replies![UserDataFromStorage.uIdFromStorage].forEach((key, value) {
-            ReplyModel replyModel = ReplyModel.fromJson(value as Map<dynamic,dynamic>);
-            print(replyModel.fromSystem);
+        print('Lenght of replies ${replies.length}');
 
-            replies.add(replyModel);
-          });
-        }
+        print('Get General Notification');
+        emit(GetGeneralNotificationSuccessState());
+
 
       });
 
-      replies.sort((x,y)=> x.date!.compareTo(y.date!));
 
-      print('Lenght of replies ${replies.length}');
-
-      print('Get General Notification');
-      emit(GetGeneralNotificationSuccessState());
 
     }catch(e){
 
@@ -190,7 +203,7 @@ class NotificationCubit extends Cubit<NotificationStates> {
 
       });
 
-      replies.sort((x,y)=> x.date!.compareTo(y.date!));
+      replies.sort((x,y)=> y.date!.compareTo(x.date!));
 
       print('Lenght of replies ${replies.length}');
 
@@ -224,8 +237,7 @@ class NotificationCubit extends Cubit<NotificationStates> {
       );
 
       await ref.set(replyModel.toJson()).then((value) {
-        getGeneralNotificationNotification();
-
+        getRepliesGeneralNotificationNotification(notificationId:notificationId );
       });
 
       print('Add Reply Success');

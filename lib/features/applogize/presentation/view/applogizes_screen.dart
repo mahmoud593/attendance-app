@@ -35,7 +35,7 @@ class _ApplogizesScreenState extends State<ApplogizesScreen> {
       builder: (context, state) {
         return ModalProgressHUD(
           inAsyncCall: state is GetAllApplogizeLoadingState,
-          progressIndicator: const CupertinoActivityIndicator(),
+          progressIndicator: const CircularProgressIndicator(color: ColorManager.primaryBlue,),
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: Scaffold(

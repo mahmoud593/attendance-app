@@ -1,6 +1,8 @@
 import 'package:attendience_app/core/helper/material_navigation.dart';
 import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/applogize/presentation/view/add_applogize_screen.dart';
+import 'package:attendience_app/features/auth/data/auth_repo_implement/auth_repo_implement.dart';
+import 'package:attendience_app/features/auth/presentaion/controller/auth_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
 import 'package:attendience_app/features/home/presentation/view/widgets/darwer_widget.dart';
@@ -99,6 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
     showPlayer = false;
     super.initState();
 
+    AuthCubit.get(context).getHomeMember(memberId:UserDataFromStorage.adminUidFromStorage,macAddress: UserDataFromStorage.mainGroupFromStorage);
+
     HomeCubit.get(context).getFigureOrganizationSettings();
 
     auth.isDeviceSupported().then(
@@ -182,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
               drawer:drawerWidget(context: context),
               body: ModalProgressHUD(
                 inAsyncCall: isLocation==false ,
-                progressIndicator: const CupertinoActivityIndicator(color: ColorManager.primaryBlue,),
+                progressIndicator: const CircularProgressIndicator(color: ColorManager.primaryBlue,),
                 child: Container(
                   decoration: const BoxDecoration(
                     color: ColorManager.primaryBlue,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:attendience_app/core/helper/app_size_config.dart';
 import 'package:attendience_app/core/helper/material_navigation.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
@@ -37,6 +38,8 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
     }
   }
 
+  bool isProcessing = false;
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
 
@@ -49,13 +52,30 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
       }
     });
 
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
+    controller.scannedDataStream.listen((scanData) async{
 
-        HomeCubit.get(context).getEducationalMemberInfo(memberId: result!.code.toString(),context: context , attendence: true);
-        return;
+      if (isProcessing) return;
+
+      setState(() {
+
+        isProcessing = true;
+        result = scanData;
       });
+
+      try {
+        // Navigator.pop(context);
+        HomeCubit.get(context).getEducationalMemberInfo(
+            memberId: result!.code.toString()
+            ,context: context , attendence: true);
+
+      } catch (e) {
+        print(e);
+      } finally {
+        setState(() {
+          isProcessing = false;
+        });
+      }
+
     });
 
 
@@ -75,7 +95,7 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeStates>(
+    return BlocConsumer<HomeCubit, HomeStates>(
       builder:(context, state) {
         return WillPopScope(
           onWillPop: (){
@@ -93,42 +113,64 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
                       await controller?.flipCamera();
                     });
                   },
-                  icon: Icon(Icons.cameraswitch_outlined, color: ColorManager.white,)
+                  icon: const Icon(Icons.cameraswitch_outlined, color: ColorManager.white,)
               ),
             ),
-            body: ModalProgressHUD(
-              inAsyncCall: state is GetEducationalMembersLoadingState || state is RecordEducationalAttendenceLoadingState,
-              progressIndicator: const CupertinoActivityIndicator() ,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 5,
-                    child: QRView(
-                      key: qrKey,
-                      onQRViewCreated: _onQRViewCreated,
+            body: state is GetEducationalMembersLoadingState || state is RecordEducationalAttendenceLoadingState?
+            Container(
+              width: SizeConfig.width,
+              height:  SizeConfig.height,
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  fit: BoxFit.fitHeight,
+                  image: AssetImage(AssetsManager.backgroundImage),
+                ),
+                color: ColorManager.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(SizeConfig.height * .07),
+                  topRight: Radius.circular(SizeConfig.height * .07),
+                ),
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: ColorManager.primaryBlue,
+                ),
+              ),
+            ):
+            Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 5,
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: _onQRViewCreated,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    width: double.infinity,
+                    color: ColorManager.primaryBlue,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('مرر الباركود لتسجيل الحضور',style: TextStyles.textStyle18Bold.copyWith(
+                          color: ColorManager.white
+                        ),),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: double.infinity,
-                      color: ColorManager.primaryBlue,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('مرر الباركود لتسجيل الحضور',style: TextStyles.textStyle18Bold.copyWith(
-                            color: ColorManager.white
-                          ),),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         );
-      }
+      },
+      listener: (context, state)async {
+        if(state is GetEducationalMembersSuccess1State){
+          await HomeCubit.get(context).recordEducationalAttendence(context: context);
+        }
+      },
     );
   }
 }

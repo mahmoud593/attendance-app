@@ -25,7 +25,8 @@ class CheckDailyLateAttendenceLoadingState extends HomeStates {}
 class CheckDailyLateAttendenceSuccessState extends HomeStates {}
 
 class GetEducationalMembersLoadingState extends HomeStates {}
-class GetEducationalMembersSuccessState extends HomeStates {}
+class GetEducationalMembersSuccess1State extends HomeStates {}
+class GetEducationalMembersSuccess2State extends HomeStates {}
 class GetEducationalMembersFailureState extends HomeStates {}
 
 class RecordEducationalAttendenceLoadingState extends HomeStates {}
