@@ -7,6 +7,8 @@ class MemberModel {
    String? userName;
    String? fullName;
    String? folderNum;
+   String? subGroupName;
+   String? mainGroupName;
    String? phone;
    String? uId;
    String? macAddress;
@@ -18,6 +20,8 @@ class MemberModel {
     required this.mainGroup,
     required this.subGroup,
     required this.organizationId,
+    required this.mainGroupName,
+    required this.subGroupName,
     required this.password,
     required this.userName,
     required this.fullName,
@@ -38,6 +42,8 @@ class MemberModel {
     password = json['password']??'';
     userName = json['userName']??'';
     fullName = json['fullName']??'';
+    mainGroupName = json['mainGroupName']??'';
+    subGroupName = json['subGroupName']??'';
     folderNum = json['folderNum']??'';
     phone = json['phone']??'';
     uId = json['uId']??'';
@@ -53,6 +59,8 @@ class MemberModel {
     data['mainGroup'] = mainGroup;
     data['subGroup'] = subGroup;
     data['organizationId'] = organizationId;
+    data['mainGroupName'] = mainGroupName;
+    data['subGroupName'] = subGroupName;
     data['password'] = password;
     data['userName'] = userName;
     data['fullName'] = fullName;

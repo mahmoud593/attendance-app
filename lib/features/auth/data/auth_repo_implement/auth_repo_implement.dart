@@ -41,8 +41,8 @@ class AuthRepoImplement implements AuthRepo{
 
       UserDataFromStorage.setEmail(memberModel.email!);
       UserDataFromStorage.setPhoneNumber(memberModel.phone!);
-      UserDataFromStorage.setMainGroup(memberModel.mainGroup!);
-      UserDataFromStorage.setSubGroup(memberModel.subGroup!);
+      UserDataFromStorage.setMainGroup(memberModel.mainGroupName!);
+      UserDataFromStorage.setSubGroup(memberModel.subGroupName!);
       UserDataFromStorage.setFullName(memberModel.fullName!);
       UserDataFromStorage.setUserName(memberModel.userName!);
       UserDataFromStorage.setFolderNum(memberModel.folderNum!);
@@ -61,8 +61,8 @@ class AuthRepoImplement implements AuthRepo{
         UserDataFromStorage.setGradeAdmin(memberModel.gradesAdmin!);
         UserDataFromStorage.setEmail(memberModel.email!);
         UserDataFromStorage.setPhoneNumber(memberModel.phone!);
-        UserDataFromStorage.setMainGroup(memberModel.mainGroup!);
-        UserDataFromStorage.setSubGroup(memberModel.subGroup!);
+        UserDataFromStorage.setMainGroup(memberModel.mainGroupName!);
+        UserDataFromStorage.setSubGroup(memberModel.subGroupName!);
         UserDataFromStorage.setFullName(memberModel.fullName!);
         UserDataFromStorage.setUserName(memberModel.userName!);
         UserDataFromStorage.setFolderNum(memberModel.folderNum!);
@@ -102,8 +102,8 @@ class AuthRepoImplement implements AuthRepo{
 
       UserDataFromStorage.setEmail(memberModel.email!);
       UserDataFromStorage.setPhoneNumber(memberModel.phone!);
-      UserDataFromStorage.setMainGroup(memberModel.mainGroup!);
-      UserDataFromStorage.setSubGroup(memberModel.subGroup!);
+      UserDataFromStorage.setMainGroup(memberModel.mainGroupName!);
+      UserDataFromStorage.setSubGroup(memberModel.subGroupName!);
       UserDataFromStorage.setFullName(memberModel.fullName!);
       UserDataFromStorage.setUserName(memberModel.userName!);
       UserDataFromStorage.setFolderNum(memberModel.folderNum!);
@@ -227,6 +227,8 @@ class AuthRepoImplement implements AuthRepo{
       subGroup: subGroup,
       organizationId: organizationId,
       password: password,
+      mainGroupName: '',
+      subGroupName: '',
       userName: userName,
       fullName: fullName,
       folderNum: folderNum,
