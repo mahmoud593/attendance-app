@@ -30,7 +30,8 @@ class DoneRecordStudentBody extends StatelessWidget {
           ).then((value){
           });
           customPushAndRemoveUntil(context, const HomeScreen());
-          }, icon: const Icon(Icons.arrow_back_ios,color: ColorManager.black,),),
+          },
+          icon: const Icon(Icons.arrow_back_ios,color: ColorManager.black,),),
         backgroundColor: ColorManager.white,
         elevation: 0,
         centerTitle: true,

@@ -4,6 +4,7 @@ import 'package:attendience_app/core/helper/constants.dart';
 import 'package:attendience_app/core/helper/material_navigation.dart';
 import 'package:attendience_app/core/shared_preference/shared_preference.dart';
 import 'package:attendience_app/features/auth/data/auth_repo_implement/auth_repo_implement.dart';
+import 'package:attendience_app/features/auth/presentaion/controller/auth_cubit.dart';
 import 'package:attendience_app/features/home/data/models/daily_attendence_model.dart';
 import 'package:attendience_app/features/home/data/models/fingure_settings_model.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
@@ -124,7 +125,8 @@ class HomeCubit extends Cubit<HomeStates>{
               body: 'تم تسجيل بصمه الحضور من قبل',
               type: ToastificationType.error
           );
-        }else{
+        }
+        else{
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
               body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
@@ -188,7 +190,8 @@ class HomeCubit extends Cubit<HomeStates>{
               body: 'تم تسجيل بصمه الحضور من قبل',
               type: ToastificationType.error
           );
-        }else{
+        }
+        else{
 
           NotificationCubit.get(context).addAttendenceNotification(
               title: 'بصمه الحضور',
@@ -474,7 +477,8 @@ class HomeCubit extends Cubit<HomeStates>{
             body: 'تم تسجيل بصمه الحضور من قبل',
             type: ToastificationType.error
         );
-      }else{
+      }
+      else{
         NotificationCubit.get(context).addAttendenceNotification(
             title: 'بصمه الحضور',
             body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
@@ -487,18 +491,23 @@ class HomeCubit extends Cubit<HomeStates>{
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
-        // toastificationWidget(
-        //     context: context,
-        //     title: 'تسجيل الحضور',
-        //     body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
-        //     type: ToastificationType.error
-        // );
-
-        customPushNavigator(context, const DoneRecordStudentBody(
-            image: AssetsManager.sad,
-            color: ColorManager.error,
-            title: 'تم تسجيلك غياب عن الدوام لهذا اليوم')
+        AuthCubit.get(context).getHomeMember(
+            memberId: UserDataFromStorage.adminUidFromStorage,
+            macAddress: UserDataFromStorage.macAddressFromStorage
         );
+
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
+            type: ToastificationType.error
+        );
+
+        // customPushNavigator(context, const DoneRecordStudentBody(
+        //     image: AssetsManager.sad,
+        //     color: ColorManager.error,
+        //     title: 'تم تسجيلك غياب عن الدوام لهذا اليوم')
+        // );
         emit(RecordEducationalAttendenceSuccessState());
         return;
       }
@@ -529,18 +538,23 @@ class HomeCubit extends Cubit<HomeStates>{
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
-        // toastificationWidget(
-        //     context: context,
-        //     title: 'تسجيل الحضور',
-        //     body: 'متاخر عن موعد الحضور وتم تسجيلك غياب',
-        //     type: ToastificationType.error
-        // );
-
-        customPushNavigator(context, const DoneRecordStudentBody(
-            image: AssetsManager.sad,
-            color: ColorManager.error,
-            title: 'تم تسجيلك غياب عن الدوام لهذا اليوم')
+        AuthCubit.get(context).getHomeMember(
+            memberId: UserDataFromStorage.adminUidFromStorage,
+            macAddress: UserDataFromStorage.macAddressFromStorage
         );
+
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيلك غياب عن الدوام لهذا اليوم',
+            type: ToastificationType.error
+        );
+
+        // customPushNavigator(context, const DoneRecordStudentBody(
+        //     image: AssetsManager.sad,
+        //     color: ColorManager.error,
+        //     title: 'تم تسجيلك غياب عن الدوام لهذا اليوم')
+        // );
         emit(RecordEducationalAttendenceSuccessState());
         return;
       }
@@ -564,24 +578,29 @@ class HomeCubit extends Cubit<HomeStates>{
             date: DateFormat('yyyy-MM-dd').format(DateTime.now())
         );
 
+        AuthCubit.get(context).getHomeMember(
+            memberId: UserDataFromStorage.adminUidFromStorage,
+            macAddress: UserDataFromStorage.macAddressFromStorage
+        );
+
         recordDailyEarlyAttendence(
             earlyFingure: 'حضر في الموعد المحدد لهذا اليوم',
             notification: '',
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
-        // toastificationWidget(
-        //     context: context,
-        //     title: 'تسجيل الحضور',
-        //     body: 'شكرا لك تم تسجيل حضورك في المعاد المحدد',
-        //     type: ToastificationType.success
-        // );
-
-        customPushNavigator(context, const DoneRecordStudentBody(
-            image: AssetsManager.happy,
-            color: ColorManager.primaryBlue,
-            title: 'حضر في الموعد المحدد لهذا اليوم')
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'حضر في الموعد المحدد لهذا اليوم',
+            type: ToastificationType.success
         );
+
+        // customPushNavigator(context, const DoneRecordStudentBody(
+        //     image: AssetsManager.happy,
+        //     color: ColorManager.primaryBlue,
+        //     title: 'حضر في الموعد المحدد لهذا اليوم')
+        // );
         emit(RecordEducationalAttendenceSuccessState());
         return;
       }
@@ -611,25 +630,26 @@ class HomeCubit extends Cubit<HomeStates>{
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
-        // toastificationWidget(
-        //     context: context,
-        //     title: 'تسجيل الحضور',
-        //     body: 'تم تسجيل حضورك ف المعاد المحدد',
-        //     type: ToastificationType.success
-        // );
-
-        customPushNavigator(context, const DoneRecordStudentBody(
-            image: AssetsManager.happy,
-            color: ColorManager.primaryBlue,
-            title: 'حضر في الموعد المحدد لهذا اليوم')
+        AuthCubit.get(context).getHomeMember(
+            memberId: UserDataFromStorage.adminUidFromStorage,
+            macAddress: UserDataFromStorage.macAddressFromStorage
         );
+
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'حضر في الموعد المحدد لهذا اليوم',
+            type: ToastificationType.success
+        );
+
+        // customPushNavigator(context, const DoneRecordStudentBody(
+        //     image: AssetsManager.happy,
+        //     color: ColorManager.primaryBlue,
+        //     title: 'حضر في الموعد المحدد لهذا اليوم')
+        // );
         emit(RecordEducationalAttendenceSuccessState());
         return;
-
-
       }
-
-
     }
 
     else if (status=='Late') {
@@ -654,18 +674,23 @@ class HomeCubit extends Cubit<HomeStates>{
             earlyFingureTime: DateFormat.Hms().format(DateTime.now())
         );
 
-        // toastificationWidget(
-        //     context: context,
-        //     title: 'تسجيل الحضور',
-        //     body: ' تم التاخير عن المعاد المحدد وتم تسجيلك متاخر',
-        //     type: ToastificationType.error
-        // );
-
-        customPushNavigator(context, const DoneRecordStudentBody(
-            image: AssetsManager.sad,
-            color: ColorManager.error,
-            title: 'تم تسجيلك متاخر عن الدوام لهذا اليوم')
+        AuthCubit.get(context).getHomeMember(
+            memberId: UserDataFromStorage.adminUidFromStorage,
+            macAddress: UserDataFromStorage.macAddressFromStorage
         );
+
+        toastificationWidget(
+            context: context,
+            title: 'تسجيل الحضور',
+            body: 'تم تسجيلك متاخر عن الدوام لهذا اليوم',
+            type: ToastificationType.error
+        );
+
+        // customPushNavigator(context, const DoneRecordStudentBody(
+        //     image: AssetsManager.sad,
+        //     color: ColorManager.error,
+        //     title: 'تم تسجيلك متاخر عن الدوام لهذا اليوم')
+        // );
         emit(RecordEducationalAttendenceSuccessState());
         return;
 

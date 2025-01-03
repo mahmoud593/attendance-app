@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:attendience_app/core/helper/app_size_config.dart';
 import 'package:attendience_app/core/helper/material_navigation.dart';
+import 'package:attendience_app/core/shared_preference/shared_preference.dart';
+import 'package:attendience_app/features/auth/presentaion/controller/auth_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_cubit.dart';
 import 'package:attendience_app/features/home/presentation/controller/home_states.dart';
 import 'package:attendience_app/features/home/presentation/view/screens/home_screen.dart';
@@ -44,20 +46,21 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
     this.controller = controller;
 
     // Try to set the front camera as the default camera
-    controller.getCameraInfo().then((cameras) async{
-      if(cameras ==CameraFacing.back) {
-        setState(()async {
-          await controller.flipCamera();
-        });
-      }
-    });
+    if(UserDataFromStorage.cameraFrontFromStorage==false){
+      controller.getCameraInfo().then((cameras) async{
+        if(cameras ==CameraFacing.back) {
+          setState(()async {
+            await controller.flipCamera();
+          });
+        }
+      });
+    }
 
     controller.scannedDataStream.listen((scanData) async{
 
       if (isProcessing) return;
 
       setState(() {
-
         isProcessing = true;
         result = scanData;
       });
@@ -99,22 +102,42 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
       builder:(context, state) {
         return WillPopScope(
           onWillPop: (){
-            Navigator.push(context, MaterialPageRoute(builder: (_){
-              return HomeScreen();
-            }));
+            AuthCubit.get(context).getHomeMember(
+                memberId: UserDataFromStorage.adminUidFromStorage,
+                macAddress: UserDataFromStorage.macAddressFromStorage
+            ).then((value){
+            });
+            customPushAndRemoveUntil(context, const HomeScreen());
             return Future.value(true);
           },
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: ColorManager.primaryBlue,
-              leading: IconButton(
-                  onPressed: (){
-                    setState(()async {
-                      await controller?.flipCamera();
-                    });
-                  },
-                  icon: const Icon(Icons.cameraswitch_outlined, color: ColorManager.white,)
-              ),
+              leading:IconButton(
+                    onPressed: (){
+                      AuthCubit.get(context).getHomeMember(
+                          memberId: UserDataFromStorage.adminUidFromStorage,
+                          macAddress: UserDataFromStorage.macAddressFromStorage
+                      ).then((value){
+                      });
+                      customPushAndRemoveUntil(context, const HomeScreen());
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    )
+                ),
+              actions: [
+                IconButton(
+                    onPressed: (){
+                      setState(()async {
+                        UserDataFromStorage.setCameraFront(UserDataFromStorage.cameraFrontFromStorage==false?true:false);
+                        await controller?.flipCamera();
+                      });
+                      },
+                    icon: const Icon(Icons.cameraswitch_outlined, color: ColorManager.white,)
+                ),
+              ],
             ),
             body: state is GetEducationalMembersLoadingState || state is RecordEducationalAttendenceLoadingState?
             Container(
