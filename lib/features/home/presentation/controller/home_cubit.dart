@@ -666,6 +666,7 @@ class HomeCubit extends Cubit<HomeStates>{
 
     else if (status=='Late') {
 
+
       if(foundUserAttendEarly==true){
         toastificationWidget(
             context: context,
