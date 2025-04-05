@@ -173,6 +173,30 @@ class _HomeScreenState extends State<HomeScreen> {
     return distanceInMeters <= 2000;
   }
 
+
+
+  bool isPointInPolygon({
+    required List<LatLng> polygon,
+    required LatLng point
+}) {
+    int intersectCount = 0;
+    for (int j = 0; j < polygon.length; j++) {
+      int i = (j + 1) % polygon.length;
+      double x1 = polygon[j].longitude, y1 = polygon[j].latitude;
+      double x2 = polygon[i].longitude, y2 = polygon[i].latitude;
+      double px = point.longitude, py = point.latitude;
+
+      if (((y1 > py) != (y2 > py)) &&
+          (px < (x2 - x1) * (py - y1) / (y2 - y1) + x1)) {
+        intersectCount++;
+      }
+    }
+    return (intersectCount % 2) == 1;
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit,HomeStates>(
@@ -227,11 +251,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: (){
                                         getMyLocation().then((v){
 
-                                          bool inLocation =  isWithin100Meters(
-                                            lat1: cubit.fingureSettingsModel!.location![0],
-                                            lon1: cubit.fingureSettingsModel!.location![1],
-                                            lat2: locationData!.latitude!,
-                                            lon2: locationData!.longitude!,
+                                          // bool inLocation = isWithin100Meters(
+                                          //   lat1: cubit.fingureSettingsModel!.location![0],
+                                          //   lon1: cubit.fingureSettingsModel!.location![1],
+                                          //   lat2: locationData!.latitude!,
+                                          //   lon2: locationData!.longitude!,
+                                          // );
+
+                                          bool inLocation = isPointInPolygon(
+                                              point: LatLng(locationData!.latitude!, locationData!.longitude!),
+                                              polygon: cubit.buildingPolygon
                                           );
 
                                           if(inLocation){
@@ -259,12 +288,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: (){
                                         getMyLocation().then((v){
 
-                                          bool inLocation =  isWithin100Meters(
-                                             lat1: cubit.fingureSettingsModel!.location![0],
-                                             lon1: cubit.fingureSettingsModel!.location![1],
-                                             lat2: locationData!.latitude!,
-                                             lon2: locationData!.longitude!,
-                                           );
+                                          // bool inLocation =  isWithin100Meters(
+                                          //    lat1: cubit.fingureSettingsModel!.location![0],
+                                          //    lon1: cubit.fingureSettingsModel!.location![1],
+                                          //    lat2: locationData!.latitude!,
+                                          //    lon2: locationData!.longitude!,
+                                          //  );
+
+                                          bool inLocation = isPointInPolygon(
+                                              point: LatLng(locationData!.latitude!, locationData!.longitude!),
+                                              polygon: cubit.buildingPolygon
+                                          );
 
                                           if(inLocation){
 
@@ -387,11 +421,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: (){
                                         getMyLocation().then((v){
 
-                                          bool inLocation =  isWithin100Meters(
-                                            lat1: cubit.fingureSettingsModel!.location![0],
-                                            lon1: cubit.fingureSettingsModel!.location![1],
-                                            lat2: locationData!.latitude!,
-                                            lon2: locationData!.longitude!,
+                                          // bool inLocation =  isWithin100Meters(
+                                          //   lat1: cubit.fingureSettingsModel!.location![0],
+                                          //   lon1: cubit.fingureSettingsModel!.location![1],
+                                          //   lat2: locationData!.latitude!,
+                                          //   lon2: locationData!.longitude!,
+                                          // );
+
+                                          bool inLocation = isPointInPolygon(
+                                              point: LatLng(locationData!.latitude!, locationData!.longitude!),
+                                              polygon: cubit.buildingPolygon
                                           );
 
                                           if(inLocation){
@@ -498,12 +537,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   GestureDetector(
                                       onTap: (){
                                         getMyLocation().then((v){
+                                          //
+                                          // bool inLocation =  isWithin100Meters(
+                                          //   lat1: cubit.fingureSettingsModel!.location![0],
+                                          //   lon1: cubit.fingureSettingsModel!.location![1],
+                                          //   lat2: locationData!.latitude!,
+                                          //   lon2: locationData!.longitude!,
+                                          // );
 
-                                          bool inLocation =  isWithin100Meters(
-                                            lat1: cubit.fingureSettingsModel!.location![0],
-                                            lon1: cubit.fingureSettingsModel!.location![1],
-                                            lat2: locationData!.latitude!,
-                                            lon2: locationData!.longitude!,
+                                          bool inLocation = isPointInPolygon(
+                                              point: LatLng(locationData!.latitude!, locationData!.longitude!),
+                                              polygon: cubit.buildingPolygon
                                           );
 
                                           if(inLocation){

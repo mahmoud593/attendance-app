@@ -22,8 +22,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await UserDataFromStorage.getData();
   await SharedPreferences.getInstance();
-  await FaceCamera.initialize(); //Add this
-
+  await FaceCamera.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

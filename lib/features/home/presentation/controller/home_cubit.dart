@@ -17,6 +17,7 @@ import 'package:attendience_app/styles/widets/toastification_widget.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geodesy/geodesy.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
@@ -43,7 +44,7 @@ class HomeCubit extends Cubit<HomeStates>{
 
   FingureSettingsModel  ?fingureSettingsModel ;
   bool isEducational = false;
-
+  List<LatLng> buildingPolygon = [];
   Future<void> getFigureOrganizationSettings()async{
 
     emit(FingureSettingsLoadingState());
@@ -58,7 +59,9 @@ class HomeCubit extends Cubit<HomeStates>{
 
       fingureSettingsModel = FingureSettingsModel.fromJson(response.value as Map<dynamic,dynamic>);
 
-      print(fingureSettingsModel!.location![0]);
+      for(int i=0;i<fingureSettingsModel!.location!.length;i++){
+        buildingPolygon.add(LatLng(fingureSettingsModel!.location![i]['lat'], fingureSettingsModel!.location![i]['long']));
+      }
 
       print('Get figure organization settings : ${fingureSettingsModel!.isEducational}');
       isEducational=fingureSettingsModel!.isEducational!;
@@ -467,6 +470,15 @@ class HomeCubit extends Cubit<HomeStates>{
         fingureSettingsModel!.absenceTime!
     );
 
+    Constants.database.child('organztions').
+    child(UserDataFromStorage.organizationIdFromStorage).
+    child('dailyAttendence').child(DateFormat('yyyy-MM-dd').format(DateTime.now()))
+        .child(UserDataFromStorage.uIdFromStorage)
+        .child('lectures').set({
+       'lec1':false,
+       'lec2':false,
+    });
+
     print(' status : $status');
     if(status=='absent'){
 
@@ -727,6 +739,16 @@ class HomeCubit extends Cubit<HomeStates>{
               'earlyFingure': earlyFingure,
               'earlyFingureTime': earlyFingureTime,
               'notification':notification,
+              'lecs':{
+                'lec1':false,
+                'lec2':false,
+                'lec3':false,
+                'lec4':false,
+                'lec5':false,
+                'lec6':false,
+                'lec7':false,
+                'lec8':false
+              },
               'lateFingureTime': '',
               'lateFingure': '',
               'date': DateFormat.yMd().format(DateTime.now())
@@ -748,6 +770,16 @@ class HomeCubit extends Cubit<HomeStates>{
               'earlyFingure': earlyFingure,
               'earlyFingureTime': earlyFingureTime,
               'lateFingureTime': '',
+              'lecs':{
+                'lec1':false,
+                'lec2':false,
+                'lec3':false,
+                'lec4':false,
+                'lec5':false,
+                'lec6':false,
+                'lec7':false,
+                'lec8':false
+              },
               'lateFingure': '',
               'date': DateFormat.yMd().format(DateTime.now())
             }
@@ -762,6 +794,61 @@ class HomeCubit extends Cubit<HomeStates>{
       print('Error in Record Daily Early Attendence : ${e.toString()}');
       emit(RecordDailyEarlyAttendenceFailureState());
     }
+  }
+
+
+  Future<void> recordLectureAttendence({required BuildContext context}) async {
+    final now = DateTime.now();
+
+    String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()) ;
+
+    final currentMinutes = now.hour * 60 + now.minute;
+
+    final List<Map<String, dynamic>> lectures = [
+      {'lec': 'lec1', 'start': '07:00', 'end': '07:45'},
+      {'lec': 'lec2', 'start': '07:46', 'end': '08:30'},
+      {'lec': 'lec3', 'start': '08:31', 'end': '09:15'},
+      {'lec': 'lec4', 'start': '09:31', 'end': '10:15'},
+      {'lec': 'lec5', 'start': '10:16', 'end': '11:00'},
+      {'lec': 'lec6', 'start': '11:01', 'end': '11:45'},
+      {'lec': 'lec7', 'start': '11:46', 'end': '12:30'},
+      {'lec': 'lec8', 'start': '12:45', 'end': '13:00'},
+    ];
+
+    for (var lecture in lectures) {
+      final start = _timeToMinutes(lecture['start']);
+      final end = _timeToMinutes(lecture['end']);
+
+      if (currentMinutes >= start && currentMinutes <= end) {
+        String lecName = lecture['lec'];
+        String timeNow = DateFormat('HH:mm').format(now);
+
+        Constants.database.child('organztions').
+        child(UserDataFromStorage.organizationIdFromStorage).
+        child('dailyAttendence').child(currentDate)
+            .child(UserDataFromStorage.uIdFromStorage)
+            .child('lecs').update({
+            lecName: true,
+        });
+
+        toastificationWidget(
+          context: context,
+          title: 'تسجيل الحضور',
+          body: 'تم تسجيل بصمه الحضور ف الحصه ${lecName.replaceAll('lec', '')}',
+          type: ToastificationType.success,
+        );
+        break; // لو تم التسجيل، نخرج من اللوب
+      }
+    }
+
+    emit(RecordDailyEarlyAttendenceLoadingState());
+  }
+
+  int _timeToMinutes(String time) {
+    final parts = time.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+    return hour * 60 + minute;
   }
 
   bool foundUserAttendEarly=false;
@@ -882,6 +969,130 @@ class HomeCubit extends Cubit<HomeStates>{
 
 
   }
+
+
+  // void callbackDispatcher() {
+  //   Workmanager().executeTask((task, inputData) async {
+  //     // هنا تكتب الكود اللي يتنفذ في الخلفية
+  //     print("Background task triggered!");
+  //     onStart();
+  //     return Future.value(true);
+  //   });
+  // }
+  //
+  //
+  //
+  // void onStart() {
+  //   Geolocator.getPositionStream(
+  //     locationSettings: const LocationSettings(
+  //       accuracy: LocationAccuracy.high,
+  //       distanceFilter: 10,
+  //     ),
+  //   ).listen((Position position) async {
+  //     LatLng currentPosition = LatLng(position.latitude, position.longitude);
+  //
+  //     await getLocationTrack();
+  //
+  //     bool isInside = isPointInPolygon(polygon: buildingPolygon, point: currentPosition);
+  //
+  //     if (!isInside) {
+  //
+  //       DateTime now = DateTime.now();
+  //       DateFormat formatter = DateFormat('hh:mm a');
+  //       String currentTimeString= formatter.format(now);
+  //       DateTime currentTime = formatter.parse(currentTimeString);
+  //       DateTime attendTime = formatter.parse('${ fingureSettingsModel!.attendTime}');
+  //       DateTime absenceTime = formatter.parse('${ fingureSettingsModel!.absenceTime}');
+  //
+  //       var currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()) ;
+  //
+  //       if (currentTime.isAfter(attendTime) && currentTime.isBefore(absenceTime) && foundUserAttendEarly==true) {
+  //           if(isLocationTracked==false){
+  //             Constants.database.child('organztions').
+  //             child(UserDataFromStorage.organizationIdFromStorage).
+  //             child('locationNotification').child(currentDate)
+  //                 .child(UserDataFromStorage.uIdFromStorage)
+  //                 .set({
+  //               'name': UserDataFromStorage.fullNameFromStorage,
+  //               'phone': UserDataFromStorage.phoneNumberFromStorage,
+  //               'timeLeft': currentTimeString,
+  //               'mainGroup': UserDataFromStorage.mainGroupFromStorage,
+  //               'subGroup': UserDataFromStorage.subGroupFromStorage,
+  //               'notificationLeft':'تم رصد خروجك من منطقه التحضير',
+  //               'notificationBack':'',
+  //               'timeBack':'',
+  //               'status':'',
+  //             });
+  //           }
+  //       }
+  //   }else{
+  //       DateTime now = DateTime.now();
+  //       DateFormat formatter = DateFormat('hh:mm a');
+  //       String currentTimeString= formatter.format(now);
+  //       DateTime currentTime = formatter.parse(currentTimeString);
+  //       DateTime attendTime = formatter.parse('${ fingureSettingsModel!.attendTime}');
+  //       DateTime absenceTime = formatter.parse('${ fingureSettingsModel!.absenceTime}');
+  //
+  //       var currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()) ;
+  //
+  //       if (currentTime.isAfter(attendTime) && currentTime.isBefore(absenceTime) && foundUserAttendEarly==true) {
+  //         if(isLocationTracked==true){
+  //           Constants.database.child('organztions').
+  //           child(UserDataFromStorage.organizationIdFromStorage).
+  //           child('locationNotification').child(currentDate)
+  //               .child(UserDataFromStorage.uIdFromStorage)
+  //               .update({
+  //             'notificationBack':'تم رصد عودتك الي منطقه التحضير',
+  //             'timeBack':currentTimeString,
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+  //
+  //
+  // bool isPointInPolygon({
+  //   required List<LatLng> polygon,
+  //   required LatLng point
+  // }) {
+  //   int intersectCount = 0;
+  //   for (int j = 0; j < polygon.length; j++) {
+  //     int i = (j + 1) % polygon.length;
+  //     double x1 = polygon[j].longitude, y1 = polygon[j].latitude;
+  //     double x2 = polygon[i].longitude, y2 = polygon[i].latitude;
+  //     double px = point.longitude, py = point.latitude;
+  //
+  //     if (((y1 > py) != (y2 > py)) &&
+  //         (px < (x2 - x1) * (py - y1) / (y2 - y1) + x1)) {
+  //       intersectCount++;
+  //     }
+  //   }
+  //   return (intersectCount % 2) == 1;
+  // }
+  //
+  // bool isLocationTracked = false;
+  // Future<void> getLocationTrack()async{
+  //
+  //   var currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()) ;
+  //
+  //   try{
+  //     Constants.database.child('organztions').
+  //     child(UserDataFromStorage.organizationIdFromStorage).
+  //     child('locationNotification').child(currentDate)
+  //         .child(UserDataFromStorage.uIdFromStorage)
+  //         .get();
+  //
+  //     isLocationTracked=true;
+  //     emit(GetEducationalMembersFailureState());
+  //   }catch(e){
+  //     isLocationTracked=false;
+  //     emit(GetEducationalMembersFailureState());
+  //   }
+  //
+  // }
+
+
 
 
 }

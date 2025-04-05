@@ -191,7 +191,11 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
       },
       listener: (context, state)async {
         if(state is GetEducationalMembersSuccess1State){
-          await HomeCubit.get(context).recordEducationalAttendence(context: context);
+          if(HomeCubit.get(context).foundUserAttendEarly==true){
+            await HomeCubit.get(context).recordLectureAttendence(context: context);
+          }else{
+            await HomeCubit.get(context).recordEducationalAttendence(context: context);
+          }
         }
       },
     );
